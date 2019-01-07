@@ -985,6 +985,85 @@ export class UnionType<RTS extends Array<Any>, A = any, O = A, I = mixed> extend
   }
 }
 
+interface Index extends Record<string, Array<[unknown, Mixed]>> {}
+
+const isLiteralType = (type: Mixed): type is LiteralType<any> => type instanceof LiteralType
+
+const isInterfaceType = (type: Mixed): type is InterfaceType<Props> => type instanceof InterfaceType
+
+const isStrictType = (type: Mixed): type is StrictType<Props> => type instanceof StrictType
+
+export const isIntersectionType = (type: Mixed): type is IntersectionType<Array<Any>> =>
+  type instanceof IntersectionType
+
+export const isUnionType = (type: Mixed): type is UnionType<Array<Any>> => type instanceof UnionType
+
+export const isExact = (type: Mixed): type is ExactType<Mixed> => type instanceof ExactType
+
+export const getTypeIndex = (type: Mixed, override: Mixed = type): Index => {
+  let r: Index = {}
+  if (isInterfaceType(type) || isStrictType(type)) {
+    for (let k in type.props) {
+      const prop = type.props[k]
+      if (isLiteralType(prop)) {
+        const value = prop.value
+        r[k] = [[value, override]]
+      }
+    }
+  } else if (isIntersectionType(type)) {
+    const types = type.types
+    r = getTypeIndex(types[0], type)
+    for (let i = 1; i < types.length; i++) {
+      const ti = getTypeIndex(types[i], type)
+      for (const k in ti) {
+        if (r.hasOwnProperty(k)) {
+          r[k].push(...ti[k])
+        } else {
+          r[k] = ti[k]
+        }
+      }
+    }
+  } else if (isUnionType(type)) {
+    return getIndex(type.types)
+  } else if (isExact(type)) {
+    return getTypeIndex(type.type, type)
+  }
+  return r
+}
+
+export const getIndex = (types: Array<Mixed>): Index => {
+  const r: Index = getTypeIndex(types[0])
+  for (let i = 1; i < types.length; i++) {
+    const ti = getTypeIndex(types[i])
+    for (const k in r) {
+      if (ti.hasOwnProperty(k)) {
+        const ips = r[k]
+        const tips = ti[k]
+        loop: for (let j = 0; j < tips.length; j++) {
+          const tip = tips[j]
+          const ii = ips.findIndex(([v]) => v === tip[0])
+          if (ii === -1) {
+            ips.push(tip)
+          } else if (tips[ii][1] !== ips[ii][1]) {
+            delete r[k]
+            break loop
+          }
+        }
+      } else {
+        delete r[k]
+      }
+    }
+  }
+  return r
+}
+
+const first = (index: Index): [string, Array<[unknown, Mixed]>] | undefined => {
+  for (let k in index) {
+    return [k, index[k]]
+  }
+  return undefined
+}
+
 /**
  * @since 1.0.0
  */
@@ -993,36 +1072,90 @@ export const union = <RTS extends Array<Mixed>>(
   name: string = `(${types.map(type => type.name).join(' | ')})`
 ): UnionType<RTS, TypeOf<RTS[number]>, OutputOf<RTS[number]>, mixed> => {
   const len = types.length
-  return new UnionType(
-    name,
-    (m): m is TypeOf<RTS[number]> => types.some(type => type.is(m)),
-    (m, c) => {
-      const errors: Errors = []
-      for (let i = 0; i < len; i++) {
-        const type = types[i]
-        const validation = type.validate(m, appendContext(c, String(i), type))
-        if (validation.isRight()) {
-          return validation
-        } else {
-          pushAll(errors, validation.value)
+  const index = first(getIndex(types))
+  if (index) {
+    const tag = index[0]
+    const pairs = index[1]
+    const find = (tagValue: unknown): [number, Mixed] | undefined => {
+      for (let i = 0; i < pairs.length; i++) {
+        const pair = pairs[i]
+        if (pair[0] === tagValue) {
+          return [i, pair[1]]
         }
       }
-      return failures(errors)
-    },
-    useIdentity(types, len)
-      ? identity
-      : a => {
-          let i = 0
-          for (; i < len - 1; i++) {
-            const type = types[i]
-            if (type.is(a)) {
-              return type.encode(a)
-            }
+    }
+    const isTagValue = (u: mixed): u is string | number | boolean => find(u) !== undefined
+    const TagValue = new Type(
+      pairs.map(([v]) => JSON.stringify(v)).join(' | '),
+      isTagValue,
+      (m, c) => (isTagValue(m) ? success(m) : failure(m, c)),
+      identity
+    )
+    return new UnionType(
+      name,
+      (u): u is TypeOf<RTS[number]> => {
+        if (!Dictionary.is(u)) {
+          return false
+        }
+        const tagValue = u[tag]
+        const type = find(tagValue)
+        return type ? type[1].is(u) : false
+      },
+      (u, c) => {
+        const dictionaryResult = Dictionary.validate(u, c)
+        if (dictionaryResult.isLeft()) {
+          return dictionaryResult
+        } else {
+          const d = dictionaryResult.value
+          const tagValue = d[tag]
+          const tagValueValidation = TagValue.validate(d[tag], appendContext(c, tag, TagValue))
+          if (tagValueValidation.isLeft()) {
+            return tagValueValidation
           }
-          return types[i].encode(a)
-        },
-    types
-  )
+          const [typeIndex, type] = find(tagValue)!
+          const typeResult = type.validate(d, appendContext(c, String(typeIndex), type))
+          if (typeResult.isLeft()) {
+            return typeResult
+          } else {
+            return success(typeResult.value)
+          }
+        }
+      },
+      useIdentity(types, len) ? identity : a => find(a[tag])![1].encode(a),
+      types
+    )
+  } else {
+    return new UnionType(
+      name,
+      (m): m is TypeOf<RTS[number]> => types.some(type => type.is(m)),
+      (m, c) => {
+        const errors: Errors = []
+        for (let i = 0; i < len; i++) {
+          const type = types[i]
+          const validation = type.validate(m, appendContext(c, String(i), type))
+          if (validation.isRight()) {
+            return validation
+          } else {
+            pushAll(errors, validation.value)
+          }
+        }
+        return failures(errors)
+      },
+      useIdentity(types, len)
+        ? identity
+        : a => {
+            let i = 0
+            for (; i < len - 1; i++) {
+              const type = types[i]
+              if (type.is(a)) {
+                return type.encode(a)
+              }
+            }
+            return types[i].encode(a)
+          },
+      types
+    )
+  }
 }
 
 /**
@@ -1443,7 +1576,10 @@ export class TaggedUnionType<
 }
 
 /**
+ * Use `union` instead
+ *
  * @since 1.3.0
+ * @deprecated
  */
 export const taggedUnion = <Tag extends string, RTS extends Array<Tagged<Tag>>>(
   tag: Tag,
