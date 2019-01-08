@@ -3,6 +3,7 @@
   "rules": {
     "semicolon": false,
     "array-type": false,
-    "no-unnecessary-generics": false
+    "no-unnecessary-generics": false,
+    "use-default-type-parameter": false
   }
 }

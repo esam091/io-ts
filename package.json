@@ -18,6 +18,7 @@
     "prepublish": "npm run build",
     "perf": "node perf/index",
     "dtslint": "dtslint dtslint",
+    "declaration": "tsc -p declaration/tsconfig.json",
     "mocha": "mocha -r ts-node/register test/*.ts"
   },
   "repository": {

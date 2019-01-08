@@ -82,11 +82,10 @@ Person.decode(JSON.parse('{"name":"Giulio"}')) // => Left([...])
 
 # TypeScript compatibility
 
-The stable version is tested against TypeScript 3.2.2, but should run with TypeScript 2.7.2+ too
-
-**Note**. If you are running `< typescript@3.0.1` you have to polyfill `unknown`.
-
-You can use [unknown-ts](https://github.com/gcanti/unknown-ts) as a polyfill.
+| io-ts version  | required TypeScript version | Notes                                                                                                                                                 |
+| -------------- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| current stable | 3.2.2+                      |                                                                                                                                                       |
+| 1.5-           | 2.7.2+                      | If you are running `< typescript@3.0.1` you have to polyfill `unknown`. You can use [unknown-ts](https://github.com/gcanti/unknown-ts) as a polyfill. |
 
 # Error reporters
 

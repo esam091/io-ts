@@ -67,7 +67,7 @@ type Assert7 = t.TypeOf<typeof A1> // $ExpectType number[]
 //
 
 const I1 = t.interface({ name: t.string, age: t.number })
-type Assert8 = t.TypeOf<typeof I1> // $ExpectType TypeOfProps<{ name: StringType; age: NumberType; }>
+type Assert8 = t.TypeOf<typeof I1> // $ExpectType { name: string; age: number; }
 // $ExpectError
 const x6: t.TypeOf<typeof I1> = {}
 // $ExpectError
@@ -87,7 +87,7 @@ const x11: I2T = { name: 'name', father: { surname: 'surname' } }
 //
 
 const D1 = t.dictionary(t.keyof({ a: true }), t.number)
-type Assert9 = t.TypeOf<typeof D1> // $ExpectType TypeOfDictionary<KeyofType<{ a: boolean; }>, NumberType>
+type Assert9 = t.TypeOf<typeof D1> // $ExpectType { a: number; }
 // $ExpectError
 const x12: t.TypeOf<typeof D1> = { a: 's' }
 // $ExpectError
@@ -108,7 +108,7 @@ type Assert10 = t.TypeOf<typeof U1> // $ExpectType string | number
 const IN1 = t.intersection([t.string, t.number])
 type Assert11 = t.TypeOf<typeof IN1> // $ExpectType string & number
 const IN2 = t.intersection([t.interface({ a: t.number }), t.interface({ b: t.string })])
-type Assert12 = t.TypeOf<typeof IN2> // $ExpectType TypeOfProps<{ a: NumberType; }> & TypeOfProps<{ b: StringType; }>
+type Assert12 = t.TypeOf<typeof IN2> // $ExpectType { a: number; } & { b: string; }
 // $ExpectError
 const x17: t.TypeOf<typeof IN2> = { a: 1 }
 const x18: t.TypeOf<typeof IN2> = { a: 1, b: 's' }
@@ -135,21 +135,23 @@ const IntersectionWithPrimitive = t.intersection([
   })
 ])
 
-type IntersectionWithPrimitive = t.TypeOf<typeof IntersectionWithPrimitive> // $ExpectType number & TypeOfProps<{ a: LiteralType<"a">; }>
+type IntersectionWithPrimitive = t.TypeOf<typeof IntersectionWithPrimitive> // $ExpectType number & { a: "a"; }
 
 //
 // tuple
 //
 
 const T1 = t.tuple([t.string, t.number])
-type Assert13 = t.TypeOf<typeof T1> // $ExpectType [string, number]
+type Assert13 = t.TypeOf<typeof T1>
+type Assert13_0 = Assert13[0] // $ExpectType string
+type Assert13_1 = Assert13[1] // $ExpectType number
 
 //
 // partial
 //
 
 const P1 = t.partial({ name: t.string })
-type Assert14 = t.TypeOf<typeof P1> // $ExpectType TypeOfPartialProps<{ name: StringType; }>
+type Assert14 = t.TypeOf<typeof P1> // $ExpectType { name?: string | undefined; }
 type P1T = t.TypeOf<typeof P1>
 // $ExpectError
 const x21: P1T = { name: 1 }
@@ -161,7 +163,7 @@ const x23: P1T = { name: 's' }
 //
 
 const RO1 = t.readonly(t.interface({ name: t.string }))
-type Assert15 = t.TypeOf<typeof RO1> // $ExpectType Readonly<TypeOfProps<{ name: StringType; }>>
+type Assert15 = t.TypeOf<typeof RO1> // $ExpectType Readonly<{ name: string; }>
 const x24: t.TypeOf<typeof RO1> = { name: 's' }
 // $ExpectError
 x24.name = 's2'
@@ -187,7 +189,7 @@ x27.push(2)
 //
 
 const S1 = t.strict({ name: t.string })
-type Assert17 = t.TypeOf<typeof S1> // $ExpectType TypeOfProps<{ name: StringType; }>
+type Assert17 = t.TypeOf<typeof S1> // $ExpectType { name: string; }
 type TS1 = t.TypeOf<typeof S1>
 const x32: TS1 = { name: 'Giulio' }
 const x33input = { name: 'foo', foo: 'foo' }
@@ -236,7 +238,7 @@ const TU2 = t.taggedUnion('type', [TU2A1, TU2B1])
 
 // $ExpectError
 const TU3 = t.taggedUnion('type', [t.type({ type: t.literal('a') }), t.type({ bad: t.literal('b') })])
-type Assert19 = t.TypeOf<typeof TU1> // $ExpectType TypeOfProps<{ type: LiteralType<"a">; }> | TypeOfProps<{ type: LiteralType<"b">; }>
+type Assert19 = t.TypeOf<typeof TU1> // $ExpectType { type: "a"; } | { type: "b"; }
 // $ExpectError
 const x36: t.TypeOf<typeof TU1> = true
 const x37: t.TypeOf<typeof TU1> = { type: 'a' }
@@ -433,31 +435,6 @@ export function maybe<RT extends t.Any>(
   return t.union<[RT, t.NullType]>([type, t.null], name)
 }
 
-const pluck = <F extends string, U extends t.UnionType<Array<t.InterfaceType<{ [K in F]: t.Mixed }>>>>(
-  union: U,
-  field: F
-): t.Type<t.TypeOf<U>[F]> => {
-  return t.union(union.types.map(type => type.props[field]))
-}
-
-export const Action = t.union([
-  t.type({
-    type: t.literal('Action1'),
-    payload: t.type({
-      foo: t.string
-    })
-  }),
-  t.type({
-    type: t.literal('Action2'),
-    payload: t.type({
-      bar: t.string
-    })
-  })
-])
-
-const ActionType = pluck(Action, 'type')
-type Assert20 = t.TypeOf<typeof ActionType> // $ExpectType "Action1" | "Action2"
-
 //
 // void
 //
@@ -475,3 +452,13 @@ declare function withValidation<L, A>(
 declare const fa: TaskEither<string, void>
 
 withValidation(t.void, () => 'validation error', fa)
+
+//
+// UnionToIntersection
+//
+
+type UnionToIntersection<U> = (U extends any ? (u: U) => void : never) extends ((u: infer I) => void) ? I : never
+
+type UnionToIntersection1 = UnionToIntersection<string | string> // $ExpectType string
+type UnionToIntersection2 = UnionToIntersection<string | number> // $ExpectType string & number
+type UnionToIntersection3 = UnionToIntersection<{ a: string } | { b: number }> // $ExpectType { a: string; } & { b: number; }
