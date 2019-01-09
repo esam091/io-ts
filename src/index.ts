@@ -212,13 +212,15 @@ const pushAll = <A>(xs: Array<A>, ys: Array<A>): void => {
 // basic types
 //
 
+const isNull = (u: unknown): u is null => u === null
+
 /**
  * @since 1.0.0
  */
 export class NullType extends Type<null, null, unknown> {
   readonly _tag: 'NullType' = 'NullType'
   constructor() {
-    super('null', (m): m is null => m === null, (m, c) => (this.is(m) ? success(m) : failure(m, c)), identity)
+    super('null', isNull, (m, c) => (isNull(m) ? success(m) : failure(m, c)), identity)
   }
 }
 
@@ -228,18 +230,15 @@ export class NullType extends Type<null, null, unknown> {
  */
 export const nullType: NullType = new NullType()
 
+const isUndefined = (u: unknown): u is undefined => u === void 0
+
 /**
  * @since 1.0.0
  */
 export class UndefinedType extends Type<undefined, undefined, unknown> {
   readonly _tag: 'UndefinedType' = 'UndefinedType'
   constructor() {
-    super(
-      'undefined',
-      (m): m is undefined => m === void 0,
-      (m, c) => (this.is(m) ? success(m) : failure(m, c)),
-      identity
-    )
+    super('undefined', isUndefined, (m, c) => (isUndefined(m) ? success(m) : failure(m, c)), identity)
   }
 }
 
@@ -320,18 +319,15 @@ export class NeverType extends Type<never, never, unknown> {
  */
 export const never: NeverType = new NeverType()
 
+const isString = (u: unknown): u is string => typeof u === 'string'
+
 /**
  * @since 1.0.0
  */
 export class StringType extends Type<string, string, unknown> {
   readonly _tag: 'StringType' = 'StringType'
   constructor() {
-    super(
-      'string',
-      (m): m is string => typeof m === 'string',
-      (m, c) => (this.is(m) ? success(m) : failure(m, c)),
-      identity
-    )
+    super('string', isString, (m, c) => (isString(m) ? success(m) : failure(m, c)), identity)
   }
 }
 
@@ -340,18 +336,15 @@ export class StringType extends Type<string, string, unknown> {
  */
 export const string: StringType = new StringType()
 
+const isNumber = (u: unknown): u is number => typeof u === 'number'
+
 /**
  * @since 1.0.0
  */
 export class NumberType extends Type<number, number, unknown> {
   readonly _tag: 'NumberType' = 'NumberType'
   constructor() {
-    super(
-      'number',
-      (m): m is number => typeof m === 'number',
-      (m, c) => (this.is(m) ? success(m) : failure(m, c)),
-      identity
-    )
+    super('number', isNumber, (m, c) => (isNumber(m) ? success(m) : failure(m, c)), identity)
   }
 }
 
@@ -360,18 +353,15 @@ export class NumberType extends Type<number, number, unknown> {
  */
 export const number: NumberType = new NumberType()
 
+const isBoolean = (u: unknown): u is boolean => typeof u === 'boolean'
+
 /**
  * @since 1.0.0
  */
 export class BooleanType extends Type<boolean, boolean, unknown> {
   readonly _tag: 'BooleanType' = 'BooleanType'
   constructor() {
-    super(
-      'boolean',
-      (m): m is boolean => typeof m === 'boolean',
-      (m, c) => (this.is(m) ? success(m) : failure(m, c)),
-      identity
-    )
+    super('boolean', isBoolean, (m, c) => (isBoolean(m) ? success(m) : failure(m, c)), identity)
   }
 }
 
@@ -386,11 +376,13 @@ export const boolean: BooleanType = new BooleanType()
 export class AnyArrayType extends Type<Array<unknown>, Array<unknown>, unknown> {
   readonly _tag: 'AnyArrayType' = 'AnyArrayType'
   constructor() {
-    super('Array', Array.isArray, (u, c) => (this.is(u) ? success(u) : failure(u, c)), identity)
+    super('Array', Array.isArray, (u, c) => (Array.isArray(u) ? success(u) : failure(u, c)), identity)
   }
 }
 
 const arrayType: AnyArrayType = new AnyArrayType()
+
+const isDictionary = (u: unknown): u is Record<string, unknown> => u !== null && typeof u === 'object'
 
 /**
  * @since 1.0.0
@@ -398,12 +390,7 @@ const arrayType: AnyArrayType = new AnyArrayType()
 export class AnyDictionaryType extends Type<Record<string, unknown>, Record<string, unknown>, unknown> {
   readonly _tag: 'AnyDictionaryType' = 'AnyDictionaryType'
   constructor() {
-    super(
-      'Dictionary',
-      (u): u is { [key: string]: unknown } => u !== null && typeof u === 'object',
-      (u, c) => (this.is(u) ? success(u) : failure(u, c)),
-      identity
-    )
+    super('Dictionary', isDictionary, (u, c) => (isDictionary(u) ? success(u) : failure(u, c)), identity)
   }
 }
 
@@ -429,6 +416,8 @@ export class ObjectType extends Type<object, object, unknown> {
  */
 export const object: ObjectType = new ObjectType()
 
+const isFunction = (u: unknown): u is Function => typeof u === 'function'
+
 /**
  * @since 1.0.0
  * @deprecated
@@ -436,12 +425,7 @@ export const object: ObjectType = new ObjectType()
 export class FunctionType extends Type<Function, Function, unknown> {
   readonly _tag: 'FunctionType' = 'FunctionType'
   constructor() {
-    super(
-      'Function',
-      (m): m is Function => typeof m === 'function',
-      (m, c) => (this.is(m) ? success(m) : failure(m, c)),
-      identity
-    )
+    super('Function', isFunction, (m, c) => (isFunction(m) ? success(m) : failure(m, c)), identity)
   }
 }
 
