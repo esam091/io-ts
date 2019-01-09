@@ -1128,12 +1128,7 @@ export const union = <TS extends [Mixed, Mixed, ...Array<Mixed>]>(
             return tagValueValidation
           }
           const [typeIndex, type] = find(tagValue)!
-          const typeResult = type.validate(d, appendContext(c, String(typeIndex), type))
-          if (typeResult.isLeft()) {
-            return typeResult
-          } else {
-            return success(typeResult.value)
-          }
+          return type.validate(d, appendContext(c, String(typeIndex), type))
         }
       },
       useIdentity(types, len) ? identity : a => find(a[tag])![1].encode(a),
