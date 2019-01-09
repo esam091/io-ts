@@ -215,7 +215,7 @@ const pushAll = <A>(xs: Array<A>, ys: Array<A>): void => {
 /**
  * @since 1.0.0
  */
-export class NullType extends Type<null> {
+export class NullType extends Type<null, null, unknown> {
   readonly _tag: 'NullType' = 'NullType'
   constructor() {
     super('null', (m): m is null => m === null, (m, c) => (this.is(m) ? success(m) : failure(m, c)), identity)
@@ -231,7 +231,7 @@ export const nullType: NullType = new NullType()
 /**
  * @since 1.0.0
  */
-export class UndefinedType extends Type<undefined> {
+export class UndefinedType extends Type<undefined, undefined, unknown> {
   readonly _tag: 'UndefinedType' = 'UndefinedType'
   constructor() {
     super(
@@ -247,8 +247,9 @@ const undefinedType: UndefinedType = new UndefinedType()
 
 /**
  * @since 1.2.0
+ * @deprecated
  */
-export class VoidType extends Type<void> {
+export class VoidType extends Type<void, void, unknown> {
   readonly _tag: 'VoidType' = 'VoidType'
   constructor() {
     super('void', undefinedType.is, undefinedType.validate, identity)
@@ -258,13 +259,15 @@ export class VoidType extends Type<void> {
 /**
  * @alias `void`
  * @since 1.2.0
+ * @deprecated
  */
 export const voidType: VoidType = new VoidType()
 
 /**
  * @since 1.0.0
+ * @deprecated
  */
-export class AnyType extends Type<any> {
+export class AnyType extends Type<any, any, unknown> {
   readonly _tag: 'AnyType' = 'AnyType'
   constructor() {
     super('any', (_): _ is any => true, success, identity)
@@ -273,13 +276,14 @@ export class AnyType extends Type<any> {
 
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export const any: AnyType = new AnyType()
 
 /**
  * @since 1.5.0
  */
-export class UnknownType extends Type<unknown> {
+export class UnknownType extends Type<unknown, unknown, unknown> {
   readonly _tag: 'UnknownType' = 'UnknownType'
   constructor() {
     super('unknown', (_): _ is unknown => true, success, identity)
@@ -293,8 +297,9 @@ export const unknown: UnknownType = new UnknownType()
 
 /**
  * @since 1.0.0
+ * @deprecated
  */
-export class NeverType extends Type<never> {
+export class NeverType extends Type<never, never, unknown> {
   readonly _tag: 'NeverType' = 'NeverType'
   constructor() {
     super(
@@ -311,13 +316,14 @@ export class NeverType extends Type<never> {
 
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export const never: NeverType = new NeverType()
 
 /**
  * @since 1.0.0
  */
-export class StringType extends Type<string> {
+export class StringType extends Type<string, string, unknown> {
   readonly _tag: 'StringType' = 'StringType'
   constructor() {
     super(
@@ -337,7 +343,7 @@ export const string: StringType = new StringType()
 /**
  * @since 1.0.0
  */
-export class NumberType extends Type<number> {
+export class NumberType extends Type<number, number, unknown> {
   readonly _tag: 'NumberType' = 'NumberType'
   constructor() {
     super(
@@ -357,7 +363,7 @@ export const number: NumberType = new NumberType()
 /**
  * @since 1.0.0
  */
-export class BooleanType extends Type<boolean> {
+export class BooleanType extends Type<boolean, boolean, unknown> {
   readonly _tag: 'BooleanType' = 'BooleanType'
   constructor() {
     super(
@@ -377,7 +383,7 @@ export const boolean: BooleanType = new BooleanType()
 /**
  * @since 1.0.0
  */
-export class AnyArrayType extends Type<Array<unknown>> {
+export class AnyArrayType extends Type<Array<unknown>, Array<unknown>, unknown> {
   readonly _tag: 'AnyArrayType' = 'AnyArrayType'
   constructor() {
     super('Array', Array.isArray, (u, c) => (this.is(u) ? success(u) : failure(u, c)), identity)
@@ -389,7 +395,7 @@ const arrayType: AnyArrayType = new AnyArrayType()
 /**
  * @since 1.0.0
  */
-export class AnyDictionaryType extends Type<Record<string, unknown>> {
+export class AnyDictionaryType extends Type<Record<string, unknown>, Record<string, unknown>, unknown> {
   readonly _tag: 'AnyDictionaryType' = 'AnyDictionaryType'
   constructor() {
     super(
@@ -408,8 +414,9 @@ export const Dictionary: AnyDictionaryType = new AnyDictionaryType()
 
 /**
  * @since 1.0.0
+ * @deprecated
  */
-export class ObjectType extends Type<object> {
+export class ObjectType extends Type<object, object, unknown> {
   readonly _tag: 'ObjectType' = 'ObjectType'
   constructor() {
     super('object', Dictionary.is, Dictionary.validate, identity)
@@ -418,18 +425,19 @@ export class ObjectType extends Type<object> {
 
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export const object: ObjectType = new ObjectType()
 
 /**
  * @since 1.0.0
+ * @deprecated
  */
-export class FunctionType extends Type<Function> {
+export class FunctionType extends Type<Function, Function, unknown> {
   readonly _tag: 'FunctionType' = 'FunctionType'
   constructor() {
     super(
       'Function',
-      // tslint:disable-next-line:strict-type-predicates
       (m): m is Function => typeof m === 'function',
       (m, c) => (this.is(m) ? success(m) : failure(m, c)),
       identity
@@ -439,6 +447,7 @@ export class FunctionType extends Type<Function> {
 
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export const Function: FunctionType = new FunctionType()
 
@@ -492,7 +501,7 @@ export const Integer = refinement(number, n => n % 1 === 0, 'Integer')
 /**
  * @since 1.0.0
  */
-export class LiteralType<V extends string | number | boolean> extends Type<V> {
+export class LiteralType<V extends string | number | boolean> extends Type<V, V, unknown> {
   readonly _tag: 'LiteralType' = 'LiteralType'
   constructor(
     name: string,
@@ -519,7 +528,7 @@ export const literal = <V extends string | number | boolean>(
 /**
  * @since 1.0.0
  */
-export class KeyofType<D extends { [key: string]: unknown }> extends Type<keyof D> {
+export class KeyofType<D extends { [key: string]: unknown }> extends Type<keyof D, keyof D, unknown> {
   readonly _tag: 'KeyofType' = 'KeyofType'
   constructor(
     name: string,
@@ -1092,7 +1101,7 @@ export const union = <TS extends [Mixed, Mixed, ...Array<Mixed>]>(
       }
     }
     const isTagValue = (u: unknown): u is string | number | boolean => find(u) !== undefined
-    const TagValue = new Type(
+    const TagValue = new Type<string | number | boolean, string | number | boolean, unknown>(
       pairs.map(([v]) => JSON.stringify(v)).join(' | '),
       isTagValue,
       (m, c) => (isTagValue(m) ? success(m) : failure(m, c)),
@@ -1566,7 +1575,7 @@ export const taggedUnion = <Tag extends string, TS extends Array<Tagged<Tag>>>(
         }
         return i
       }
-  const TagValue = new Type(
+  const TagValue = new Type<string | number | boolean, string | number | boolean, unknown>(
     values.map(l => JSON.stringify(l)).join(' | '),
     isTagValue,
     (m, c) => (isTagValue(m) ? success(m) : failure(m, c)),
