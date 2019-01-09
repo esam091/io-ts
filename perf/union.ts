@@ -23,7 +23,7 @@ const TUB = t.intersection(
   'TUB'
 )
 
-const DateFromNumber = new t.Type<Date, number>(
+const DateFromNumber = new t.Codec<Date, number>(
   'DateFromNumber',
   (v): v is Date => v instanceof Date,
   (s, c) =>

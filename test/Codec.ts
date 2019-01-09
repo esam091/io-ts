@@ -3,7 +3,7 @@ import * as t from '../src/index'
 import { assertSuccess, assertFailure } from './helpers'
 import { right } from 'fp-ts/lib/Either'
 
-const BAA = new t.Type<number, string, string>(
+const BAA = new t.Codec<number, string, string>(
   'BAA',
   t.number.is,
   (s, c) => {
@@ -34,7 +34,7 @@ describe('Type', () => {
     })
 
     it('should ude identity as decoder function', () => {
-      assert.strictEqual(t.string.pipe(t.string as t.Type<string, string, string>).encode, t.identity)
+      assert.strictEqual(t.string.pipe(t.string as t.Codec<string, string, string>).encode, t.identity)
     })
 
     it('accept to pipe a type with a wider input', () => {

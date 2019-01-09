@@ -26,34 +26,34 @@ high state of flux, you're at risk of it changing without notice.
   - make `tuple`, `intersection`, `union` and `taggedUnion` safer (@gcanti)
     - the number of types passed in (at least two) are now statically enforced
   - add intermediary interfaces in order to avoid boilerplate / unreadable types (@gcanti)
-    - `NullT`
-    - `UndefinedT`
-    - `VoidT`
-    - `AnyT`
-    - `UnknownT`
-    - `NeverT`
-    - `StringT`
-    - `NumberT`
-    - `BooleanT`
-    - `UnknownArrayT`
-    - `UnknownRecordT`
-    - `ObjectT`
-    - `FunctionT`
-    - `RefinementT`
-    - `LiteralT`
-    - `KeyofT`
-    - `ArrayT`
-    - `TypeT`
-    - `PartialT`
-    - `RecordT`
-    - `UnionT`
-    - `IntersectionT`
-    - `TupleT`
-    - `ReadonlyT`
-    - `ReadonlyArrayT`
-    - `StrictT`
-    - `TaggedUnionT`
-    - `ExactT`
+    - `NullC`
+    - `UndefinedC`
+    - `VoidC`
+    - `AnyC`
+    - `UnknownC`
+    - `NeverC`
+    - `StringC`
+    - `NumberC`
+    - `BooleanC`
+    - `UnknownArrayC`
+    - `UnknownRecordC`
+    - `ObjectC`
+    - `FunctionC`
+    - `RefinementC`
+    - `LiteralC`
+    - `KeyofC`
+    - `ArrayC`
+    - `TypeC`
+    - `PartialC`
+    - `RecordC`
+    - `UnionC`
+    - `IntersectionC`
+    - `TupleC`
+    - `ReadonlyC`
+    - `ReadonlyArrayC`
+    - `StrictC`
+    - `TaggedUnionC`
+    - `ExactC`
 - **Deprecation**
   - deprecate `clean` (@gcanti)
   - deprecate `alias` (@gcanti)
@@ -66,9 +66,10 @@ high state of flux, you're at risk of it changing without notice.
   - deprecate `Dictionary` in favour of `UnknownRecord` (@gcanti)
   - deprecate `dictionary` in favour of `record` (@gcanti)
   - deprecate `readonly` and `ReadonlyType` (@gcanti)
-  - deprecate `readonlyArray` adn `ReadonlyArrayType` (@gcanti)
+  - deprecate `readonlyArray` and `ReadonlyArrayType` (@gcanti)
   - deprecate `PropsOf` type (@gcanti)
   - deprecate `Exact` type (@gcanti)
+  - deprecate `Type` in favour of `Codec` (@gcanti)
 
 # 1.5.2
 

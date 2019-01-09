@@ -93,7 +93,7 @@ describe('recursion', () => {
         b: t.union([self, t.null])
       })
     )
-    assert.strictEqual(T.type instanceof t.Type, true)
+    assert.strictEqual(T.type instanceof t.Codec, true)
     assert.strictEqual(T.type.name, '{ a: number, b: (T | null) }')
     assert.strictEqual((T.type as any).props.a._tag, 'NumberType')
   })
