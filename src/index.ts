@@ -781,14 +781,14 @@ export interface Props {
 /**
  * @since 1.6.0
  */
-export interface InterfaceT<P extends Props>
+export interface TypeT<P extends Props>
   extends InterfaceType<P, { [K in keyof P]: TypeOf<P[K]> }, { [K in keyof P]: OutputOf<P[K]> }, unknown> {}
 
 /**
  * @alias `interface`
  * @since 1.0.0
  */
-export const type = <P extends Props>(props: P, name: string = getNameFromProps(props)): InterfaceT<P> => {
+export const type = <P extends Props>(props: P, name: string = getNameFromProps(props)): TypeT<P> => {
   const keys = Object.keys(props)
   const types = keys.map(key => props[key])
   const len = keys.length

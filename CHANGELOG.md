@@ -43,7 +43,7 @@ high state of flux, you're at risk of it changing without notice.
     - `LiteralT`
     - `KeyofT`
     - `ArrayT`
-    - `InterfaceT`
+    - `TypeT`
     - `PartialT`
     - `RecordT`
     - `UnionT`

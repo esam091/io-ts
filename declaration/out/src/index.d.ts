@@ -491,7 +491,7 @@ export interface Props {
 /**
  * @since 1.6.0
  */
-export interface InterfaceT<P extends Props> extends InterfaceType<P, {
+export interface TypeT<P extends Props> extends InterfaceType<P, {
     [K in keyof P]: TypeOf<P[K]>;
 }, {
     [K in keyof P]: OutputOf<P[K]>;
@@ -501,7 +501,7 @@ export interface InterfaceT<P extends Props> extends InterfaceType<P, {
  * @alias `interface`
  * @since 1.0.0
  */
-export declare const type: <P extends Props>(props: P, name?: string) => InterfaceT<P>;
+export declare const type: <P extends Props>(props: P, name?: string) => TypeT<P>;
 /**
  * @since 1.0.0
  */
