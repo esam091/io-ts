@@ -163,7 +163,7 @@ const x23: P1T = { name: 's' }
 //
 
 const RO1 = t.readonly(t.interface({ name: t.string }))
-type Assert15 = t.TypeOf<typeof RO1> // $ExpectType Readonly<{ name: string; }>
+type Assert15 = t.TypeOf<typeof RO1> // $ExpectType { readonly name: string; }
 const x24: t.TypeOf<typeof RO1> = { name: 's' }
 // $ExpectError
 x24.name = 's2'

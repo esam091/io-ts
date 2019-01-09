@@ -1426,7 +1426,12 @@ export class ReadonlyType<C extends Any, A = any, O = A, I = unknown> extends Co
  * @since 1.6.0
  */
 export interface ReadonlyC<C extends Mixed>
-  extends ReadonlyType<C, Readonly<TypeOf<C>>, Readonly<OutputOf<C>>, unknown> {}
+  extends ReadonlyType<
+    C,
+    { readonly [K in keyof TypeOf<C>]: TypeOf<C>[K] },
+    { readonly [K in keyof OutputOf<C>]: OutputOf<C>[K] },
+    unknown
+  > {}
 
 /**
  * @since 1.0.0
