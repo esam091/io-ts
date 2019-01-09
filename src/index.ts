@@ -220,7 +220,7 @@ const isNull = (u: unknown): u is null => u === null
 export class NullType extends Type<null, null, unknown> {
   readonly _tag: 'NullType' = 'NullType'
   constructor() {
-    super('null', isNull, (m, c) => (isNull(m) ? success(m) : failure(m, c)), identity)
+    super('null', isNull, (u, c) => (isNull(u) ? success(u) : failure(u, c)), identity)
   }
 }
 
@@ -238,7 +238,7 @@ const isUndefined = (u: unknown): u is undefined => u === void 0
 export class UndefinedType extends Type<undefined, undefined, unknown> {
   readonly _tag: 'UndefinedType' = 'UndefinedType'
   constructor() {
-    super('undefined', isUndefined, (m, c) => (isUndefined(m) ? success(m) : failure(m, c)), identity)
+    super('undefined', isUndefined, (u, c) => (isUndefined(u) ? success(u) : failure(u, c)), identity)
   }
 }
 
@@ -304,7 +304,7 @@ export class NeverType extends Type<never, never, unknown> {
     super(
       'never',
       (_): _ is never => false,
-      (m, c) => failure(m, c),
+      (u, c) => failure(u, c),
       /* istanbul ignore next */
       () => {
         throw new Error('cannot encode never')
@@ -327,7 +327,7 @@ const isString = (u: unknown): u is string => typeof u === 'string'
 export class StringType extends Type<string, string, unknown> {
   readonly _tag: 'StringType' = 'StringType'
   constructor() {
-    super('string', isString, (m, c) => (isString(m) ? success(m) : failure(m, c)), identity)
+    super('string', isString, (u, c) => (isString(u) ? success(u) : failure(u, c)), identity)
   }
 }
 
@@ -344,7 +344,7 @@ const isNumber = (u: unknown): u is number => typeof u === 'number'
 export class NumberType extends Type<number, number, unknown> {
   readonly _tag: 'NumberType' = 'NumberType'
   constructor() {
-    super('number', isNumber, (m, c) => (isNumber(m) ? success(m) : failure(m, c)), identity)
+    super('number', isNumber, (u, c) => (isNumber(u) ? success(u) : failure(u, c)), identity)
   }
 }
 
@@ -361,7 +361,7 @@ const isBoolean = (u: unknown): u is boolean => typeof u === 'boolean'
 export class BooleanType extends Type<boolean, boolean, unknown> {
   readonly _tag: 'BooleanType' = 'BooleanType'
   constructor() {
-    super('boolean', isBoolean, (m, c) => (isBoolean(m) ? success(m) : failure(m, c)), identity)
+    super('boolean', isBoolean, (u, c) => (isBoolean(u) ? success(u) : failure(u, c)), identity)
   }
 }
 
@@ -425,7 +425,7 @@ const isFunction = (u: unknown): u is Function => typeof u === 'function'
 export class FunctionType extends Type<Function, Function, unknown> {
   readonly _tag: 'FunctionType' = 'FunctionType'
   constructor() {
-    super('Function', isFunction, (m, c) => (isFunction(m) ? success(m) : failure(m, c)), identity)
+    super('Function', isFunction, (u, c) => (isFunction(u) ? success(u) : failure(u, c)), identity)
   }
 }
 
@@ -462,7 +462,7 @@ export const refinement = <T extends Any>(
 ): RefinementType<T, TypeOf<T>, OutputOf<T>, InputOf<T>> =>
   new RefinementType(
     name,
-    (m): m is TypeOf<T> => type.is(m) && predicate(m),
+    (u): u is TypeOf<T> => type.is(u) && predicate(u),
     (i, c) => {
       const validation = type.validate(i, c)
       if (validation.isLeft()) {
@@ -534,7 +534,7 @@ export const keyof = <D extends { [key: string]: unknown }>(
   name: string = `(keyof ${JSON.stringify(Object.keys(keys))})`
 ): KeyofType<D> => {
   const is = (u: unknown): u is keyof D => string.is(u) && hasOwnProperty.call(keys, u)
-  return new KeyofType(name, is, (m, c) => (is(m) ? success(m) : failure(m, c)), identity, keys)
+  return new KeyofType(name, is, (u, c) => (is(u) ? success(u) : failure(u, c)), identity, keys)
 }
 
 /**
@@ -572,8 +572,8 @@ export const recursion = <A, O = A, I = unknown, T extends Type<A, O, I> = Type<
   }
   const Self: any = new RecursiveType<T, A, O, I>(
     name,
-    (m): m is A => runDefinition().is(m),
-    (m, c) => runDefinition().validate(m, c),
+    (u): u is A => runDefinition().is(u),
+    (u, c) => runDefinition().validate(u, c),
     a => runDefinition().encode(a),
     runDefinition
   )
@@ -605,9 +605,9 @@ export const array = <T extends Mixed>(
 ): ArrayType<T, Array<TypeOf<T>>, Array<OutputOf<T>>, unknown> =>
   new ArrayType(
     name,
-    (m): m is Array<TypeOf<T>> => arrayType.is(m) && m.every(type.is),
-    (m, c) => {
-      const arrayValidation = arrayType.validate(m, c)
+    (u): u is Array<TypeOf<T>> => arrayType.is(u) && u.every(type.is),
+    (u, c) => {
+      const arrayValidation = arrayType.validate(u, c)
       if (arrayValidation.isLeft()) {
         return arrayValidation
       } else {
@@ -706,20 +706,20 @@ export const type = <P extends Props>(
   const len = keys.length
   return new InterfaceType(
     name,
-    (m): m is { [K in keyof P]: TypeOf<P[K]> } => {
-      if (!Dictionary.is(m)) {
+    (u): u is { [K in keyof P]: TypeOf<P[K]> } => {
+      if (!Dictionary.is(u)) {
         return false
       }
       for (let i = 0; i < len; i++) {
         const k = keys[i]
-        if (!hasOwnProperty.call(m, k) || !types[i].is(m[k])) {
+        if (!hasOwnProperty.call(u, k) || !types[i].is(u[k])) {
           return false
         }
       }
       return true
     },
-    (m, c) => {
-      const dictionaryValidation = Dictionary.validate(m, c)
+    (u, c) => {
+      const dictionaryValidation = Dictionary.validate(u, c)
       if (dictionaryValidation.isLeft()) {
         return dictionaryValidation
       } else {
@@ -814,20 +814,20 @@ export const partial = <P extends Props>(
   }
   return new PartialType(
     name,
-    (m): m is { [K in keyof P]?: TypeOf<P[K]> } => {
-      if (!Dictionary.is(m)) {
+    (u): u is { [K in keyof P]?: TypeOf<P[K]> } => {
+      if (!Dictionary.is(u)) {
         return false
       }
       for (let i = 0; i < len; i++) {
         const k = keys[i]
-        if (!partials[k].is(m[k])) {
+        if (!partials[k].is(u[k])) {
           return false
         }
       }
       return true
     },
-    (m, c) => {
-      const dictionaryValidation = Dictionary.validate(m, c)
+    (u, c) => {
+      const dictionaryValidation = Dictionary.validate(u, c)
       if (dictionaryValidation.isLeft()) {
         return dictionaryValidation
       } else {
@@ -915,10 +915,10 @@ export const dictionary = <D extends Mixed, C extends Mixed>(
   const D = isIndexSignatureRequired ? refinedDictionary : Dictionary
   return new DictionaryType(
     name,
-    (m): m is { [K in TypeOf<D>]: TypeOf<C> } =>
-      D.is(m) && Object.keys(m).every(k => domain.is(k) && codomain.is(m[k])),
-    (m, c) => {
-      const dictionaryValidation = D.validate(m, c)
+    (u): u is { [K in TypeOf<D>]: TypeOf<C> } =>
+      D.is(u) && Object.keys(u).every(k => domain.is(k) && codomain.is(u[k])),
+    (u, c) => {
+      const dictionaryValidation = D.validate(u, c)
       if (dictionaryValidation.isLeft()) {
         return dictionaryValidation
       } else {
@@ -1087,7 +1087,7 @@ export const union = <TS extends [Mixed, Mixed, ...Array<Mixed>]>(
     const TagValue = new Type<LiteralValue, LiteralValue, unknown>(
       pairs.map(([v]) => JSON.stringify(v)).join(' | '),
       isTagValue,
-      (m, c) => (isTagValue(m) ? success(m) : failure(m, c)),
+      (u, c) => (isTagValue(u) ? success(u) : failure(u, c)),
       identity
     )
     return new UnionType(
@@ -1121,12 +1121,12 @@ export const union = <TS extends [Mixed, Mixed, ...Array<Mixed>]>(
   } else {
     return new UnionType(
       name,
-      (m): m is TypeOf<TS[number]> => types.some(type => type.is(m)),
-      (m, c) => {
+      (u): u is TypeOf<TS[number]> => types.some(type => type.is(u)),
+      (u, c) => {
         const errors: Errors = []
         for (let i = 0; i < len; i++) {
           const type = types[i]
-          const validation = type.validate(m, appendContext(c, String(i), type))
+          const validation = type.validate(u, appendContext(c, String(i), type))
           if (validation.isRight()) {
             return validation
           } else {
@@ -1190,9 +1190,9 @@ export function intersection<TS extends [Mixed, Mixed, ...Array<Mixed>]>(
   const len = types.length
   return new IntersectionType(
     name,
-    (m): m is any => types.every(type => type.is(m)),
-    (m, c) => {
-      let a = m
+    (u): u is any => types.every(type => type.is(u)),
+    (u, c) => {
+      let a = u
       const errors: Errors = []
       for (let i = 0; i < len; i++) {
         const type = types[i]
@@ -1245,9 +1245,9 @@ export function tuple<TS extends [Mixed, Mixed, ...Array<Mixed>]>(
   const len = types.length
   return new TupleType(
     name,
-    (m): m is any => arrayType.is(m) && m.length === len && types.every((type, i) => type.is(m[i])),
-    (m, c) => {
-      const arrayValidation = arrayType.validate(m, c)
+    (u): u is any => arrayType.is(u) && u.length === len && types.every((type, i) => type.is(u[i])),
+    (u, c) => {
+      const arrayValidation = arrayType.validate(u, c)
       if (arrayValidation.isLeft()) {
         return arrayValidation
       } else {
@@ -1308,8 +1308,8 @@ export const readonly = <T extends Mixed>(
   new ReadonlyType(
     name,
     type.is,
-    (m, c) =>
-      type.validate(m, c).map(x => {
+    (u, c) =>
+      type.validate(u, c).map(x => {
         if (process.env.NODE_ENV !== 'production') {
           return Object.freeze(x)
         }
@@ -1346,8 +1346,8 @@ export const readonlyArray = <T extends Mixed>(
   return new ReadonlyArrayType(
     name,
     arrayType.is,
-    (m, c) =>
-      arrayType.validate(m, c).map(x => {
+    (u, c) =>
+      arrayType.validate(u, c).map(x => {
         if (process.env.NODE_ENV !== 'production') {
           return Object.freeze(x)
         } else {
@@ -1640,9 +1640,9 @@ export function exact<T extends HasProps>(
   const props: Props = getProps(type)
   return new ExactType(
     name,
-    (m): m is TypeOf<T> => type.is(m) && Object.getOwnPropertyNames(m).every(k => hasOwnProperty.call(props, k)),
-    (m, c) => {
-      const looseValidation = type.validate(m, c)
+    (u): u is TypeOf<T> => type.is(u) && Object.getOwnPropertyNames(u).every(k => hasOwnProperty.call(props, k)),
+    (u, c) => {
+      const looseValidation = type.validate(u, c)
       if (looseValidation.isLeft()) {
         return looseValidation
       } else {
