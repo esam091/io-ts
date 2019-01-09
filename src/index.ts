@@ -498,10 +498,12 @@ export const refinement = <T extends Any>(
  */
 export const Integer = refinement(number, n => n % 1 === 0, 'Integer')
 
+type LiteralValue = string | number | boolean
+
 /**
  * @since 1.0.0
  */
-export class LiteralType<V extends string | number | boolean> extends Type<V, V, unknown> {
+export class LiteralType<V extends LiteralValue> extends Type<V, V, unknown> {
   readonly _tag: 'LiteralType' = 'LiteralType'
   constructor(
     name: string,
@@ -517,10 +519,7 @@ export class LiteralType<V extends string | number | boolean> extends Type<V, V,
 /**
  * @since 1.0.0
  */
-export const literal = <V extends string | number | boolean>(
-  value: V,
-  name: string = JSON.stringify(value)
-): LiteralType<V> => {
+export const literal = <V extends LiteralValue>(value: V, name: string = JSON.stringify(value)): LiteralType<V> => {
   const is = (u: unknown): u is V => u === value
   return new LiteralType(name, is, (u, c) => (is(u) ? success(value) : failure(u, c)), identity, value)
 }
@@ -1100,8 +1099,8 @@ export const union = <TS extends [Mixed, Mixed, ...Array<Mixed>]>(
         }
       }
     }
-    const isTagValue = (u: unknown): u is string | number | boolean => find(u) !== undefined
-    const TagValue = new Type<string | number | boolean, string | number | boolean, unknown>(
+    const isTagValue = (u: unknown): u is LiteralValue => find(u) !== undefined
+    const TagValue = new Type<LiteralValue, LiteralValue, unknown>(
       pairs.map(([v]) => JSON.stringify(v)).join(' | '),
       isTagValue,
       (m, c) => (isTagValue(m) ? success(m) : failure(m, c)),
@@ -1498,7 +1497,7 @@ const findTagged = <Tag extends string>(tag: Tag, types: TaggedIntersectionArgum
 /**
  * @since 1.3.0
  */
-export const getTagValue = <Tag extends string>(tag: Tag): ((type: Tagged<Tag>) => string | number | boolean) => {
+export const getTagValue = <Tag extends string>(tag: Tag): ((type: Tagged<Tag>) => LiteralValue) => {
   const f = (type: Tagged<Tag>): string => {
     switch (type._tag) {
       case 'InterfaceType':
@@ -1551,7 +1550,7 @@ export const taggedUnion = <Tag extends string, TS extends Array<Tagged<Tag>>>(
   name: string = `(${types.map(type => type.name).join(' | ')})`
 ): TaggedUnionType<Tag, TS, TypeOf<TS[number]>, OutputOf<TS[number]>, unknown> => {
   const len = types.length
-  const values: Array<string | number | boolean> = new Array(len)
+  const values: Array<LiteralValue> = new Array(len)
   const hash: { [key: string]: number } = {}
   let useHash = true
   const get = getTagValue(tag)
@@ -1562,9 +1561,9 @@ export const taggedUnion = <Tag extends string, TS extends Array<Tagged<Tag>>>(
     hash[String(value)] = i
   }
   const isTagValue = useHash
-    ? (u: unknown): u is string | number | boolean => string.is(u) && hasOwnProperty.call(hash, u)
-    : (u: unknown): u is string | number | boolean => values.indexOf(u as any) !== -1
-  const getIndex: (tag: string | number | boolean) => number = useHash
+    ? (u: unknown): u is LiteralValue => string.is(u) && hasOwnProperty.call(hash, u)
+    : (u: unknown): u is LiteralValue => values.indexOf(u as any) !== -1
+  const getIndex: (tag: LiteralValue) => number = useHash
     ? tag => hash[tag as any]
     : tag => {
         let i = 0
@@ -1575,7 +1574,7 @@ export const taggedUnion = <Tag extends string, TS extends Array<Tagged<Tag>>>(
         }
         return i
       }
-  const TagValue = new Type<string | number | boolean, string | number | boolean, unknown>(
+  const TagValue = new Type<LiteralValue, LiteralValue, unknown>(
     values.map(l => JSON.stringify(l)).join(' | '),
     isTagValue,
     (m, c) => (isTagValue(m) ? success(m) : failure(m, c)),
