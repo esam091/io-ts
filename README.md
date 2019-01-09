@@ -47,22 +47,14 @@ A runtime type representing `string` can be defined as
 ```ts
 import * as t from 'io-ts'
 
-// runtime type definition
-export class StringType extends t.Type<string> {
-  // equivalent to Type<string, string, mixed> as per type parameter defaults
-  readonly _tag: 'StringType' = 'StringType'
-  constructor() {
-    super(
-      'string',
-      (m): m is string => typeof m === 'string',
-      (m, c) => (this.is(m) ? t.success(m) : t.failure(m, c)),
-      t.identity
-    )
-  }
-}
+const isString = (u: unknown): u is string => typeof u === 'string'
 
-// runtime type instance: use this when building other runtime types instances
-export const string = new StringType()
+export const string = new t.Type<string, string, unknown>(
+  'string',
+  isString,
+  (u, c) => (isString(u) ? t.success(u) : t.failure(u, c)),
+  t.identity
+)
 ```
 
 A runtime type can be used to validate an object in memory (for example an API payload)
