@@ -308,6 +308,9 @@ export declare class RefinementType<T extends Any, A = any, O = A, I = unknown> 
     readonly _tag: 'RefinementType';
     constructor(name: string, is: RefinementType<T, A, O, I>['is'], validate: RefinementType<T, A, O, I>['validate'], encode: RefinementType<T, A, O, I>['encode'], type: T, predicate: Predicate<A>);
 }
+/**
+ * @since 1.6.0
+ */
 export interface RefinementT<T extends Any> extends RefinementType<T, TypeOf<T>, OutputOf<T>, InputOf<T>> {
 }
 /**
@@ -368,6 +371,9 @@ export declare class ArrayType<T extends Any, A = any, O = A, I = unknown> exten
     readonly _tag: 'ArrayType';
     constructor(name: string, is: ArrayType<T, A, O, I>['is'], validate: ArrayType<T, A, O, I>['validate'], encode: ArrayType<T, A, O, I>['encode'], type: T);
 }
+/**
+ * @since 1.6.0
+ */
 export interface ArrayT<T extends Mixed> extends ArrayType<T, Array<TypeOf<T>>, Array<OutputOf<T>>, unknown> {
 }
 /**
@@ -408,6 +414,9 @@ export declare type OutputOfProps<P extends AnyProps> = {
 export interface Props {
     [key: string]: Mixed;
 }
+/**
+ * @since 1.6.0
+ */
 export interface InterfaceT<P extends Props> extends InterfaceType<P, {
     [K in keyof P]: TypeOf<P[K]>;
 }, {
@@ -441,6 +450,9 @@ export declare type TypeOfPartialProps<P extends AnyProps> = {
 export declare type OutputOfPartialProps<P extends AnyProps> = {
     [K in keyof P]?: OutputOf<P[K]>;
 };
+/**
+ * @since 1.6.0
+ */
 export interface PartialT<P extends Props> extends PartialType<P, {
     [K in keyof P]?: TypeOf<P[K]>;
 }, {
@@ -474,6 +486,9 @@ export declare type TypeOfDictionary<D extends Any, C extends Any> = {
 export declare type OutputOfDictionary<D extends Any, C extends Any> = {
     [K in OutputOf<D>]: OutputOf<C>;
 };
+/**
+ * @since 1.6.0
+ */
 export interface DictionaryT<D extends Mixed, C extends Mixed> extends DictionaryType<D, C, {
     [K in TypeOf<D>]: TypeOf<C>;
 }, {
@@ -499,6 +514,9 @@ export declare const isUnionType: (type: Mixed) => type is UnionType<Any[], any,
 export declare const isExact: (type: Mixed) => type is ExactType<Mixed, any, any, unknown>;
 export declare const getTypeIndex: (type: Mixed, override?: Mixed) => Index;
 export declare const getIndex: (types: Mixed[]) => Index;
+/**
+ * @since 1.6.0
+ */
 export interface UnionT<TS extends [Mixed, Mixed, ...Array<Mixed>]> extends UnionType<TS, TypeOf<TS[number]>, OutputOf<TS[number]>, unknown> {
 }
 /**
@@ -525,6 +543,9 @@ export declare class IntersectionType<TS extends Array<Any>, A = any, O = A, I =
 export declare type Compact<A> = {
     [K in keyof A]: A[K];
 };
+/**
+ * @since 1.6.0
+ */
 export interface IntersectionT<TS extends [Mixed, Mixed, ...Array<Mixed>]> extends IntersectionType<TS, UnionToIntersection<TypeOf<TS[number]>>, UnionToIntersection<OutputOf<TS[number]>>, unknown> {
 }
 /**
@@ -539,6 +560,9 @@ export declare class TupleType<TS extends Array<Any>, A = any, O = A, I = unknow
     readonly _tag: 'TupleType';
     constructor(name: string, is: TupleType<TS, A, O, I>['is'], validate: TupleType<TS, A, O, I>['validate'], encode: TupleType<TS, A, O, I>['encode'], types: TS);
 }
+/**
+ * @since 1.6.0
+ */
 export interface TupleT<TS extends [Mixed, Mixed, ...Array<Mixed>]> extends TupleType<TS, {
     [K in keyof TS]: TypeOf<TS[K]>;
 }, {
@@ -557,6 +581,9 @@ export declare class ReadonlyType<T extends Any, A = any, O = A, I = unknown> ex
     readonly _tag: 'ReadonlyType';
     constructor(name: string, is: ReadonlyType<T, A, O, I>['is'], validate: ReadonlyType<T, A, O, I>['validate'], encode: ReadonlyType<T, A, O, I>['encode'], type: T);
 }
+/**
+ * @since 1.6.0
+ */
 export interface ReadonlyT<T extends Mixed> extends ReadonlyType<T, Readonly<TypeOf<T>>, Readonly<OutputOf<T>>, unknown> {
 }
 /**
@@ -571,6 +598,9 @@ export declare class ReadonlyArrayType<T extends Any, A = any, O = A, I = unknow
     readonly _tag: 'ReadonlyArrayType';
     constructor(name: string, is: ReadonlyArrayType<T, A, O, I>['is'], validate: ReadonlyArrayType<T, A, O, I>['validate'], encode: ReadonlyArrayType<T, A, O, I>['encode'], type: T);
 }
+/**
+ * @since 1.6.0
+ */
 export interface ReadonlyArrayT<T extends Mixed> extends ReadonlyArrayType<T, ReadonlyArray<TypeOf<T>>, ReadonlyArray<OutputOf<T>>, unknown> {
 }
 /**
@@ -585,6 +615,9 @@ export declare class StrictType<P, A = any, O = A, I = unknown> extends Type<A, 
     readonly _tag: 'StrictType';
     constructor(name: string, is: StrictType<P, A, O, I>['is'], validate: StrictType<P, A, O, I>['validate'], encode: StrictType<P, A, O, I>['encode'], props: P);
 }
+/**
+ * @since 1.6.0
+ */
 export interface StrictT<P extends Props> extends StrictType<P, {
     [K in keyof P]: TypeOf<P[K]>;
 }, {
@@ -646,7 +679,10 @@ export declare class TaggedUnionType<Tag extends string, TS extends Array<Tagged
     readonly tag: Tag;
     constructor(name: string, is: TaggedUnionType<Tag, TS, A, O, I>['is'], validate: TaggedUnionType<Tag, TS, A, O, I>['validate'], encode: TaggedUnionType<Tag, TS, A, O, I>['encode'], types: TS, tag: Tag);
 }
-export interface TaggedUnionT<Tag extends string, TS extends Array<Tagged<Tag>>> extends TaggedUnionType<Tag, TS, TypeOf<TS[number]>, OutputOf<TS[number]>, unknown> {
+/**
+ * @since 1.6.0
+ */
+export interface TaggedUnionT<Tag extends string, TS extends [Tagged<Tag>, Tagged<Tag>, ...Array<Tagged<Tag>>]> extends TaggedUnionType<Tag, TS, TypeOf<TS[number]>, OutputOf<TS[number]>, unknown> {
 }
 /**
  * Use `union` instead
@@ -654,7 +690,7 @@ export interface TaggedUnionT<Tag extends string, TS extends Array<Tagged<Tag>>>
  * @since 1.3.0
  * @deprecated
  */
-export declare const taggedUnion: <Tag extends string, TS extends Tagged<Tag, any, any>[]>(tag: Tag, types: TS, name?: string) => TaggedUnionT<Tag, TS>;
+export declare const taggedUnion: <Tag extends string, TS extends [Tagged<Tag, any, any>, Tagged<Tag, any, any>, ...Tagged<Tag, any, any>[]]>(tag: Tag, types: TS, name?: string) => TaggedUnionT<Tag, TS>;
 /**
  * @since 1.1.0
  */
@@ -682,6 +718,9 @@ export interface HasPropsIntersection extends IntersectionType<Array<HasProps>, 
  * @since 1.1.0
  */
 export declare type HasProps = HasPropsRefinement | HasPropsReadonly | HasPropsIntersection | InterfaceType<any, any, any, any> | StrictType<any, any, any, any> | PartialType<any, any, any, any>;
+/**
+ * @since 1.6.0
+ */
 export interface ExactT<T extends HasProps> extends ExactType<T, TypeOf<T>, OutputOf<T>, InputOf<T>> {
 }
 /**
@@ -691,16 +730,19 @@ export declare function exact<T extends HasProps>(type: T, name?: string): Exact
 /**
  * Drops the runtime type "kind"
  * @since 1.1.0
+ * @deprecated
  */
 export declare function clean<A, O = A, I = unknown>(type: Type<A, O, I>): Type<A, O, I>;
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export declare type PropsOf<T extends {
     props: any;
 }> = T['props'];
 /**
  * @since 1.1.0
+ * @deprecated
  */
 export declare type Exact<T, X extends T> = T & {
     [K in ({
@@ -714,6 +756,7 @@ export declare type Exact<T, X extends T> = T & {
 /**
  * Keeps the runtime type "kind"
  * @since 1.1.0
+ * @deprecated
  */
 export declare function alias<A, O, P, I>(type: PartialType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => PartialType<PP, AA, OO, II>;
 export declare function alias<A, O, P, I>(type: StrictType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => StrictType<PP, AA, OO, II>;

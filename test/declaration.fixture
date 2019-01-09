@@ -115,13 +115,13 @@ export declare const S5: t.StrictT<{
         }>;
     }>;
 }>;
-export declare const TU1: t.TaggedUnionT<"type", (t.InterfaceT<{
+export declare const TU1: t.TaggedUnionT<"type", [t.InterfaceT<{
     type: t.LiteralType<true>;
     foo: t.StringType;
-}> | t.InterfaceT<{
+}>, t.InterfaceT<{
     type: t.LiteralType<false>;
     bar: t.NumberType;
-}>)[]>;
+}>]>;
 export declare const E1: t.ExactT<t.InterfaceT<{
     e: t.InterfaceT<{
         d: t.InterfaceT<{

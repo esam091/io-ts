@@ -682,7 +682,7 @@ export declare class TaggedUnionType<Tag extends string, TS extends Array<Tagged
 /**
  * @since 1.6.0
  */
-export interface TaggedUnionT<Tag extends string, TS extends Array<Tagged<Tag>>> extends TaggedUnionType<Tag, TS, TypeOf<TS[number]>, OutputOf<TS[number]>, unknown> {
+export interface TaggedUnionT<Tag extends string, TS extends [Tagged<Tag>, Tagged<Tag>, ...Array<Tagged<Tag>>]> extends TaggedUnionType<Tag, TS, TypeOf<TS[number]>, OutputOf<TS[number]>, unknown> {
 }
 /**
  * Use `union` instead
@@ -690,7 +690,7 @@ export interface TaggedUnionT<Tag extends string, TS extends Array<Tagged<Tag>>>
  * @since 1.3.0
  * @deprecated
  */
-export declare const taggedUnion: <Tag extends string, TS extends Tagged<Tag, any, any>[]>(tag: Tag, types: TS, name?: string) => TaggedUnionT<Tag, TS>;
+export declare const taggedUnion: <Tag extends string, TS extends [Tagged<Tag, any, any>, Tagged<Tag, any, any>, ...Tagged<Tag, any, any>[]]>(tag: Tag, types: TS, name?: string) => TaggedUnionT<Tag, TS>;
 /**
  * @since 1.1.0
  */

@@ -1580,7 +1580,7 @@ export class TaggedUnionType<
 /**
  * @since 1.6.0
  */
-export interface TaggedUnionT<Tag extends string, TS extends Array<Tagged<Tag>>>
+export interface TaggedUnionT<Tag extends string, TS extends [Tagged<Tag>, Tagged<Tag>, ...Array<Tagged<Tag>>]>
   extends TaggedUnionType<Tag, TS, TypeOf<TS[number]>, OutputOf<TS[number]>, unknown> {}
 
 /**
@@ -1589,7 +1589,7 @@ export interface TaggedUnionT<Tag extends string, TS extends Array<Tagged<Tag>>>
  * @since 1.3.0
  * @deprecated
  */
-export const taggedUnion = <Tag extends string, TS extends Array<Tagged<Tag>>>(
+export const taggedUnion = <Tag extends string, TS extends [Tagged<Tag>, Tagged<Tag>, ...Array<Tagged<Tag>>]>(
   tag: Tag,
   types: TS,
   name: string = `(${types.map(type => type.name).join(' | ')})`
