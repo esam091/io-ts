@@ -518,16 +518,16 @@ export declare type OutputOfDictionary<D extends Any, C extends Any> = {
 /**
  * @since 1.6.0
  */
-export interface DictionaryT<D extends Mixed, C extends Mixed> extends DictionaryType<D, C, {
+export interface RecordT<D extends Mixed, C extends Mixed> extends DictionaryType<D, C, {
     [K in TypeOf<D>]: TypeOf<C>;
 }, {
     [K in OutputOf<D>]: OutputOf<C>;
 }, unknown> {
 }
 /**
- * @since 1.0.0
+ * @since 1.6.0
  */
-export declare const dictionary: <D extends Mixed, C extends Mixed>(domain: D, codomain: C, name?: string) => DictionaryT<D, C>;
+export declare const record: <D extends Mixed, C extends Mixed>(domain: D, codomain: C, name?: string) => RecordT<D, C>;
 /**
  * @since 1.0.0
  */
@@ -790,4 +790,4 @@ export declare type Exact<T, X extends T> = T & {
 export declare function alias<A, O, P, I>(type: PartialType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => PartialType<PP, AA, OO, II>;
 export declare function alias<A, O, P, I>(type: StrictType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => StrictType<PP, AA, OO, II>;
 export declare function alias<A, O, P, I>(type: InterfaceType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => InterfaceType<PP, AA, OO, II>;
-export { nullType as null, undefinedType as undefined, UnknownArray as Array, type as interface, voidType as void, UnknownRecord as Dictionary };
+export { nullType as null, undefinedType as undefined, UnknownArray as Array, type as interface, voidType as void, UnknownRecord as Dictionary, record as dictionary };

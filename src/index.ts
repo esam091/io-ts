@@ -955,17 +955,17 @@ const refinedDictionary = refinement(UnknownRecord, d => Object.prototype.toStri
 /**
  * @since 1.6.0
  */
-export interface DictionaryT<D extends Mixed, C extends Mixed>
+export interface RecordT<D extends Mixed, C extends Mixed>
   extends DictionaryType<D, C, { [K in TypeOf<D>]: TypeOf<C> }, { [K in OutputOf<D>]: OutputOf<C> }, unknown> {}
 
 /**
- * @since 1.0.0
+ * @since 1.6.0
  */
-export const dictionary = <D extends Mixed, C extends Mixed>(
+export const record = <D extends Mixed, C extends Mixed>(
   domain: D,
   codomain: C,
   name: string = `{ [K in ${domain.name}]: ${codomain.name} }`
-): DictionaryT<D, C> => {
+): RecordT<D, C> => {
   const isIndexSignatureRequired = (codomain as any) !== any
   const D = isIndexSignatureRequired ? refinedDictionary : UnknownRecord
   return new DictionaryType(
@@ -1828,5 +1828,6 @@ export {
   UnknownArray as Array,
   type as interface,
   voidType as void,
-  UnknownRecord as Dictionary
+  UnknownRecord as Dictionary,
+  record as dictionary
 }

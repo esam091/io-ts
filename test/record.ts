@@ -4,16 +4,16 @@ import { assertSuccess, assertFailure, assertStrictEqual, assertDeepEqual, strin
 
 describe('dictionary', () => {
   it('should succeed validating a valid value', () => {
-    const T1 = t.dictionary(t.string, t.number)
+    const T1 = t.record(t.string, t.number)
     assertSuccess(T1.decode({}))
     assertSuccess(T1.decode({ aa: 1 }))
-    const T2 = t.dictionary(t.refinement(t.string, s => s.length >= 2), t.number)
+    const T2 = t.record(t.refinement(t.string, s => s.length >= 2), t.number)
     assertSuccess(T2.decode({}))
     assertSuccess(T2.decode({ aa: 1 }))
-    const T3 = t.dictionary(string2, t.number)
+    const T3 = t.record(string2, t.number)
     assertSuccess(T3.decode({}))
     assertSuccess(T3.decode({ aa: 1 }))
-    const T4 = t.dictionary(t.string, t.any)
+    const T4 = t.record(t.string, t.any)
     assertSuccess(T4.decode([]))
     assertSuccess(T4.decode([1]))
     assertSuccess(T4.decode(new Number()))
@@ -21,22 +21,22 @@ describe('dictionary', () => {
   })
 
   it('should return the same reference if validation succeeded if nothing changed', () => {
-    const T1 = t.dictionary(t.string, t.number)
+    const T1 = t.record(t.string, t.number)
     const value1 = { aa: 1 }
     assertStrictEqual(T1.decode(value1), value1)
-    const T2 = t.dictionary(t.refinement(t.string, s => s.length >= 2), t.number)
+    const T2 = t.record(t.refinement(t.string, s => s.length >= 2), t.number)
     const value2 = { aa: 1 }
     assertStrictEqual(T2.decode(value2), value2)
   })
 
   it('should return a new reference if validation succeeded and something changed', () => {
-    const T = t.dictionary(string2, t.number)
+    const T = t.record(string2, t.number)
     const value = { aa: 1 }
     assertDeepEqual(T.decode(value), { 'a-a': 1 })
   })
 
   it('should fail validating an invalid value', () => {
-    const T1 = t.dictionary(t.string, t.number)
+    const T1 = t.record(t.string, t.number)
     assertFailure(T1.decode(1), ['Invalid value 1 supplied to : { [K in string]: number }'])
     assertFailure(T1.decode({ aa: 's' }), ['Invalid value "s" supplied to : { [K in string]: number }/aa: number'])
     assertFailure(T1.decode([]), ['Invalid value [] supplied to : { [K in string]: number }'])
@@ -44,12 +44,12 @@ describe('dictionary', () => {
     assertFailure(T1.decode(new Number()), ['Invalid value 0 supplied to : { [K in string]: number }'])
     const d = new Date()
     assertFailure(T1.decode(d), [`Invalid value ${JSON.stringify(d)} supplied to : { [K in string]: number }`])
-    const T2 = t.dictionary(string2, t.any)
+    const T2 = t.record(string2, t.any)
     assertFailure(T2.decode([1]), ['Invalid value "0" supplied to : { [K in string2]: any }/0: string2'])
   })
 
   it('should support literals as domain type', () => {
-    const T = t.dictionary(t.literal('foo'), t.string)
+    const T = t.record(t.literal('foo'), t.string)
     assertSuccess(T.decode({ foo: 'bar' }))
     assertFailure(T.decode({ foo: 'bar', baz: 'bob' }), [
       'Invalid value "baz" supplied to : { [K in "foo"]: string }/baz: "foo"'
@@ -57,7 +57,7 @@ describe('dictionary', () => {
   })
 
   it('should support keyof as domain type', () => {
-    const T = t.dictionary(t.keyof({ foo: true, bar: true }), t.string)
+    const T = t.record(t.keyof({ foo: true, bar: true }), t.string)
     assertSuccess(T.decode({ foo: 'bar' }))
     assertFailure(T.decode({ foo: 'bar', baz: 'bob' }), [
       'Invalid value "baz" supplied to : { [K in (keyof ["foo","bar"])]: string }/baz: (keyof ["foo","bar"])'
@@ -65,38 +65,38 @@ describe('dictionary', () => {
   })
 
   it('should serialize a deserialized', () => {
-    const T1 = t.dictionary(t.string, DateFromNumber)
+    const T1 = t.record(t.string, DateFromNumber)
     assert.deepEqual(T1.encode({ a: new Date(0), b: new Date(1) }), { a: 0, b: 1 })
-    const T2 = t.dictionary(string2, t.number)
+    const T2 = t.record(string2, t.number)
     assert.deepEqual(T2.encode({ 'a-a': 1, 'a-b': 2 }), { aa: 1, ab: 2 })
   })
 
   it('should return the same reference when serializing', () => {
-    const T1 = t.dictionary(t.string, t.number)
+    const T1 = t.record(t.string, t.number)
     assert.strictEqual(T1.encode, t.identity)
-    const T2 = t.dictionary(string2, t.number)
+    const T2 = t.record(string2, t.number)
     assert.strictEqual(T2.encode === t.identity, false)
   })
 
   it('should type guard', () => {
-    const T1 = t.dictionary(t.string, t.number)
+    const T1 = t.record(t.string, t.number)
     assert.strictEqual(T1.is({}), true)
     assert.strictEqual(T1.is({ a: 1 }), true)
     assert.strictEqual(T1.is({ a: 'foo' }), false)
-    const T2 = t.dictionary(t.string, DateFromNumber)
+    const T2 = t.record(t.string, DateFromNumber)
     assert.strictEqual(T2.is({}), true)
     assert.strictEqual(T2.is({ a: new Date(0) }), true)
     assert.strictEqual(T2.is({ a: 0 }), false)
-    const T3 = t.dictionary(string2, t.number)
+    const T3 = t.record(string2, t.number)
     assert.strictEqual(T3.is({}), true)
     assert.strictEqual(T3.is({ 'a-a': 1 }), true)
     assert.strictEqual(T3.is({ aa: 1 }), false)
   })
 
   it('should assign a default name', () => {
-    const T1 = t.dictionary(t.string, t.number)
+    const T1 = t.record(t.string, t.number)
     assert.strictEqual(T1.name, '{ [K in string]: number }')
-    const T2 = t.dictionary(t.string, t.number, 'T2')
+    const T2 = t.record(t.string, t.number, 'T2')
     assert.strictEqual(T2.name, 'T2')
   })
 })

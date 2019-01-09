@@ -48,7 +48,7 @@ export declare const P5: t.PartialT<{
         }>;
     }>;
 }>;
-export declare const D5: t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.NumberT>>>>>;
+export declare const D5: t.RecordT<t.StringT, t.RecordT<t.StringT, t.RecordT<t.StringT, t.RecordT<t.StringT, t.RecordT<t.StringT, t.NumberT>>>>>;
 export declare const U1: t.UnionT<[t.InterfaceT<{
     e: t.InterfaceT<{
         d: t.InterfaceT<{
@@ -59,7 +59,7 @@ export declare const U1: t.UnionT<[t.InterfaceT<{
             }>;
         }>;
     }>;
-}>, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.NumberT>>>>>]>;
+}>, t.RecordT<t.StringT, t.RecordT<t.StringT, t.RecordT<t.StringT, t.RecordT<t.StringT, t.RecordT<t.StringT, t.NumberT>>>>>]>;
 export declare const I1: t.IntersectionT<[t.InterfaceT<{
     e: t.InterfaceT<{
         d: t.InterfaceT<{
@@ -70,7 +70,7 @@ export declare const I1: t.IntersectionT<[t.InterfaceT<{
             }>;
         }>;
     }>;
-}>, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.NumberT>>>>>]>;
+}>, t.RecordT<t.StringT, t.RecordT<t.StringT, t.RecordT<t.StringT, t.RecordT<t.StringT, t.RecordT<t.StringT, t.NumberT>>>>>]>;
 export declare const Tu1: t.TupleT<[t.InterfaceT<{
     e: t.InterfaceT<{
         d: t.InterfaceT<{
@@ -81,7 +81,7 @@ export declare const Tu1: t.TupleT<[t.InterfaceT<{
             }>;
         }>;
     }>;
-}>, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.NumberT>>>>>]>;
+}>, t.RecordT<t.StringT, t.RecordT<t.StringT, t.RecordT<t.StringT, t.RecordT<t.StringT, t.RecordT<t.StringT, t.NumberT>>>>>]>;
 export declare const RO1: t.ReadonlyT<t.InterfaceT<{
     e: t.InterfaceT<{
         d: t.InterfaceT<{
