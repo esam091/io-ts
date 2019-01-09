@@ -224,6 +224,9 @@ export class NullType extends Type<null, null, unknown> {
   }
 }
 
+/**
+ * @since 1.6.0
+ */
 export interface NullT extends NullType {}
 
 /**
@@ -244,6 +247,9 @@ export class UndefinedType extends Type<undefined, undefined, unknown> {
   }
 }
 
+/**
+ * @since 1.6.0
+ */
 export interface UndefinedT extends UndefinedType {}
 
 const undefinedType: UndefinedT = new UndefinedType()
@@ -259,6 +265,9 @@ export class VoidType extends Type<void, void, unknown> {
   }
 }
 
+/**
+ * @since 1.6.0
+ */
 export interface VoidT extends VoidType {}
 
 /**
@@ -279,6 +288,9 @@ export class AnyType extends Type<any, any, unknown> {
   }
 }
 
+/**
+ * @since 1.6.0
+ */
 export interface AnyT extends AnyType {}
 
 /**
@@ -297,6 +309,9 @@ export class UnknownType extends Type<unknown, unknown, unknown> {
   }
 }
 
+/**
+ * @since 1.6.0
+ */
 export interface UnknownT extends UnknownType {}
 
 /**
@@ -323,6 +338,9 @@ export class NeverType extends Type<never, never, unknown> {
   }
 }
 
+/**
+ * @since 1.6.0
+ */
 export interface NeverT extends NeverType {}
 
 /**
@@ -343,6 +361,9 @@ export class StringType extends Type<string, string, unknown> {
   }
 }
 
+/**
+ * @since 1.6.0
+ */
 export interface StringT extends StringType {}
 
 /**
@@ -362,6 +383,9 @@ export class NumberType extends Type<number, number, unknown> {
   }
 }
 
+/**
+ * @since 1.6.0
+ */
 export interface NumberT extends NumberType {}
 
 /**
@@ -381,6 +405,9 @@ export class BooleanType extends Type<boolean, boolean, unknown> {
   }
 }
 
+/**
+ * @since 1.6.0
+ */
 export interface BooleanT extends BooleanType {}
 
 /**
@@ -398,6 +425,9 @@ export class AnyArrayType extends Type<Array<unknown>, Array<unknown>, unknown> 
   }
 }
 
+/**
+ * @since 1.6.0
+ */
 export interface UnknownArrayT extends AnyArrayType {}
 
 /**
@@ -417,6 +447,9 @@ export class AnyDictionaryType extends Type<Record<string, unknown>, Record<stri
   }
 }
 
+/**
+ * @since 1.6.0
+ */
 export interface UnknownRecordT extends AnyDictionaryType {}
 
 /**
@@ -435,6 +468,9 @@ export class ObjectType extends Type<object, object, unknown> {
   }
 }
 
+/**
+ * @since 1.6.0
+ */
 export interface ObjectT extends ObjectType {}
 
 /**
@@ -456,6 +492,9 @@ export class FunctionType extends Type<Function, Function, unknown> {
   }
 }
 
+/**
+ * @since 1.6.0
+ */
 export interface FunctionT extends FunctionType {}
 
 /**
@@ -534,6 +573,9 @@ export class LiteralType<V extends LiteralValue> extends Type<V, V, unknown> {
   }
 }
 
+/**
+ * @since 1.6.0
+ */
 export interface LiteralT<V extends LiteralValue> extends LiteralType<V> {}
 
 /**
@@ -562,6 +604,9 @@ export class KeyofType<D extends Record<string, unknown>> extends Type<keyof D, 
 
 const hasOwnProperty = Object.prototype.hasOwnProperty
 
+/**
+ * @since 1.6.0
+ */
 export interface KeyofT<D extends Record<string, unknown>> extends KeyofType<D> {}
 
 /**
@@ -1362,6 +1407,7 @@ export function tuple<TS extends [Mixed, Mixed, ...Array<Mixed>]>(
 
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export class ReadonlyType<T extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
   readonly _tag: 'ReadonlyType' = 'ReadonlyType'
@@ -1384,6 +1430,7 @@ export interface ReadonlyT<T extends Mixed>
 
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export const readonly = <T extends Mixed>(type: T, name: string = `Readonly<${type.name}>`): ReadonlyT<T> =>
   new ReadonlyType(
@@ -1402,6 +1449,7 @@ export const readonly = <T extends Mixed>(type: T, name: string = `Readonly<${ty
 
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export class ReadonlyArrayType<T extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
   readonly _tag: 'ReadonlyArrayType' = 'ReadonlyArrayType'
@@ -1424,6 +1472,7 @@ export interface ReadonlyArrayT<T extends Mixed>
 
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export const readonlyArray = <T extends Mixed>(
   type: T,
@@ -1448,6 +1497,7 @@ export const readonlyArray = <T extends Mixed>(
 
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export class StrictType<P, A = any, O = A, I = unknown> extends Type<A, O, I> {
   readonly _tag: 'StrictType' = 'StrictType'
@@ -1470,7 +1520,8 @@ export interface StrictT<P extends Props>
 
 /**
  * Specifies that only the given properties are allowed
- * @deprecated use `exact` instead
+ * Use `exact` instead
+ * @deprecated
  * @since 1.0.0
  */
 export const strict = <P extends Props>(
@@ -1590,6 +1641,7 @@ export const getTagValue = <Tag extends string>(tag: Tag): ((type: Tagged<Tag>) 
 
 /**
  * @since 1.3.0
+ * @deprecated
  */
 export class TaggedUnionType<
   Tag extends string,

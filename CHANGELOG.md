@@ -16,8 +16,59 @@ high state of flux, you're at risk of it changing without notice.
 
 # 1.6.0
 
-- **New Feature**
+**Important**. This version requires `typescript@3.2.2+`
+
+- **Experimental**
   - deprecate `taggedUnion` in favour of `union` (@gcanti)
+    - tagged unions are now auto detected by `union`
+- **New Feature**
+  - remove overloadings from `tuple` and `intersection` (@gcanti)
+  - make `tuple`, `intersection`, `union` and `taggedUnion` safer (@gcanti)
+    - the number of types passed in (at least two) are now statically enforced
+  - add intermediary interfaces in order to avoid boilerplate / unreadable types (@gcanti)
+    - `NullT`
+    - `UndefinedT`
+    - `VoidT`
+    - `AnyT`
+    - `UnknownT`
+    - `NeverT`
+    - `StringT`
+    - `NumberT`
+    - `BooleanT`
+    - `UnknownArrayT`
+    - `UnknownRecordT`
+    - `ObjectT`
+    - `FunctionT`
+    - `RefinementT`
+    - `LiteralT`
+    - `KeyofT`
+    - `ArrayT`
+    - `InterfaceT`
+    - `PartialT`
+    - `RecordT`
+    - `UnionT`
+    - `IntersectionT`
+    - `TupleT`
+    - `ReadonlyT`
+    - `ReadonlyArrayT`
+    - `StrictT`
+    - `TaggedUnionT`
+    - `ExactT`
+- **Deprecation**
+  - deprecate `clean` (@gcanti)
+  - deprecate `alias` (@gcanti)
+  - deprecate `VoidType` (@gcanti)
+  - deprecate `AnyType` (@gcanti)
+  - deprecate `NeverType` (@gcanti)
+  - deprecate `ObjectType` (@gcanti)
+  - deprecate `FunctionType` (@gcanti)
+  - deprecate `Array` in favour of `UnknownArray` (@gcanti)
+  - deprecate `Dictionary` in favour of `UnknownRecord` (@gcanti)
+  - deprecate `dictionary` in favour of `record` (@gcanti)
+  - deprecate `readonly` and `ReadonlyType` (@gcanti)
+  - deprecate `readonlyArray` adn `ReadonlyArrayType` (@gcanti)
+  - deprecate `PropsOf` type (@gcanti)
+  - deprecate `Exact` type (@gcanti)
 
 # 1.5.2
 

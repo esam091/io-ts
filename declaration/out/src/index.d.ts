@@ -157,6 +157,9 @@ export declare class NullType extends Type<null, null, unknown> {
     readonly _tag: 'NullType';
     constructor();
 }
+/**
+ * @since 1.6.0
+ */
 export interface NullT extends NullType {
 }
 /**
@@ -171,6 +174,9 @@ export declare class UndefinedType extends Type<undefined, undefined, unknown> {
     readonly _tag: 'UndefinedType';
     constructor();
 }
+/**
+ * @since 1.6.0
+ */
 export interface UndefinedT extends UndefinedType {
 }
 declare const undefinedType: UndefinedT;
@@ -182,6 +188,9 @@ export declare class VoidType extends Type<void, void, unknown> {
     readonly _tag: 'VoidType';
     constructor();
 }
+/**
+ * @since 1.6.0
+ */
 export interface VoidT extends VoidType {
 }
 /**
@@ -198,6 +207,9 @@ export declare class AnyType extends Type<any, any, unknown> {
     readonly _tag: 'AnyType';
     constructor();
 }
+/**
+ * @since 1.6.0
+ */
 export interface AnyT extends AnyType {
 }
 /**
@@ -212,6 +224,9 @@ export declare class UnknownType extends Type<unknown, unknown, unknown> {
     readonly _tag: 'UnknownType';
     constructor();
 }
+/**
+ * @since 1.6.0
+ */
 export interface UnknownT extends UnknownType {
 }
 /**
@@ -226,6 +241,9 @@ export declare class NeverType extends Type<never, never, unknown> {
     readonly _tag: 'NeverType';
     constructor();
 }
+/**
+ * @since 1.6.0
+ */
 export interface NeverT extends NeverType {
 }
 /**
@@ -240,6 +258,9 @@ export declare class StringType extends Type<string, string, unknown> {
     readonly _tag: 'StringType';
     constructor();
 }
+/**
+ * @since 1.6.0
+ */
 export interface StringT extends StringType {
 }
 /**
@@ -253,6 +274,9 @@ export declare class NumberType extends Type<number, number, unknown> {
     readonly _tag: 'NumberType';
     constructor();
 }
+/**
+ * @since 1.6.0
+ */
 export interface NumberT extends NumberType {
 }
 /**
@@ -266,6 +290,9 @@ export declare class BooleanType extends Type<boolean, boolean, unknown> {
     readonly _tag: 'BooleanType';
     constructor();
 }
+/**
+ * @since 1.6.0
+ */
 export interface BooleanT extends BooleanType {
 }
 /**
@@ -279,6 +306,9 @@ export declare class AnyArrayType extends Type<Array<unknown>, Array<unknown>, u
     readonly _tag: 'AnyArrayType';
     constructor();
 }
+/**
+ * @since 1.6.0
+ */
 export interface UnknownArrayT extends AnyArrayType {
 }
 /**
@@ -292,6 +322,9 @@ export declare class AnyDictionaryType extends Type<Record<string, unknown>, Rec
     readonly _tag: 'AnyDictionaryType';
     constructor();
 }
+/**
+ * @since 1.6.0
+ */
 export interface UnknownRecordT extends AnyDictionaryType {
 }
 /**
@@ -306,6 +339,9 @@ export declare class ObjectType extends Type<object, object, unknown> {
     readonly _tag: 'ObjectType';
     constructor();
 }
+/**
+ * @since 1.6.0
+ */
 export interface ObjectT extends ObjectType {
 }
 /**
@@ -321,6 +357,9 @@ export declare class FunctionType extends Type<Function, Function, unknown> {
     readonly _tag: 'FunctionType';
     constructor();
 }
+/**
+ * @since 1.6.0
+ */
 export interface FunctionT extends FunctionType {
 }
 /**
@@ -359,6 +398,9 @@ export declare class LiteralType<V extends LiteralValue> extends Type<V, V, unkn
     readonly _tag: 'LiteralType';
     constructor(name: string, is: LiteralType<V>['is'], validate: LiteralType<V>['validate'], encode: LiteralType<V>['encode'], value: V);
 }
+/**
+ * @since 1.6.0
+ */
 export interface LiteralT<V extends LiteralValue> extends LiteralType<V> {
 }
 /**
@@ -373,6 +415,9 @@ export declare class KeyofType<D extends Record<string, unknown>> extends Type<k
     readonly _tag: 'KeyofType';
     constructor(name: string, is: KeyofType<D>['is'], validate: KeyofType<D>['validate'], encode: KeyofType<D>['encode'], keys: D);
 }
+/**
+ * @since 1.6.0
+ */
 export interface KeyofT<D extends Record<string, unknown>> extends KeyofType<D> {
 }
 /**
@@ -604,6 +649,7 @@ export interface TupleT<TS extends [Mixed, Mixed, ...Array<Mixed>]> extends Tupl
 export declare function tuple<TS extends [Mixed, Mixed, ...Array<Mixed>]>(types: TS, name?: string): TupleT<TS>;
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export declare class ReadonlyType<T extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
     readonly type: T;
@@ -617,10 +663,12 @@ export interface ReadonlyT<T extends Mixed> extends ReadonlyType<T, Readonly<Typ
 }
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export declare const readonly: <T extends Mixed>(type: T, name?: string) => ReadonlyT<T>;
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export declare class ReadonlyArrayType<T extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
     readonly type: T;
@@ -634,10 +682,12 @@ export interface ReadonlyArrayT<T extends Mixed> extends ReadonlyArrayType<T, Re
 }
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export declare const readonlyArray: <T extends Mixed>(type: T, name?: string) => ReadonlyArrayT<T>;
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export declare class StrictType<P, A = any, O = A, I = unknown> extends Type<A, O, I> {
     readonly props: P;
@@ -655,7 +705,8 @@ export interface StrictT<P extends Props> extends StrictType<P, {
 }
 /**
  * Specifies that only the given properties are allowed
- * @deprecated use `exact` instead
+ * Use `exact` instead
+ * @deprecated
  * @since 1.0.0
  */
 export declare const strict: <P extends Props>(props: P, name?: string) => StrictT<P>;
@@ -703,6 +754,7 @@ export declare const isTagged: <Tag extends string>(tag: Tag) => (type: Mixed) =
 export declare const getTagValue: <Tag extends string>(tag: Tag) => (type: Tagged<Tag, any, any>) => LiteralValue;
 /**
  * @since 1.3.0
+ * @deprecated
  */
 export declare class TaggedUnionType<Tag extends string, TS extends Array<Tagged<Tag>>, A = any, O = A, I = unknown> extends UnionType<TS, A, O, I> {
     readonly tag: Tag;
