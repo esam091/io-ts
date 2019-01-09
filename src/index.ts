@@ -1550,34 +1550,21 @@ export const taggedUnion = <Tag extends string, TS extends Array<Tagged<Tag>>>(
   name: string = `(${types.map(type => type.name).join(' | ')})`
 ): TaggedUnionType<Tag, TS, TypeOf<TS[number]>, OutputOf<TS[number]>, unknown> => {
   const len = types.length
-  const values: Array<LiteralValue> = new Array(len)
-  const hash: { [key: string]: number } = {}
-  let useHash = true
-  const get = getTagValue(tag)
-  for (let i = 0; i < len; i++) {
-    const value = get(types[i])
-    useHash = useHash && string.is(value)
-    values[i] = value
-    hash[String(value)] = i
-  }
-  const isTagValue = useHash
-    ? (u: unknown): u is LiteralValue => string.is(u) && hasOwnProperty.call(hash, u)
-    : (u: unknown): u is LiteralValue => values.indexOf(u as any) !== -1
-  const getIndex: (tag: LiteralValue) => number = useHash
-    ? tag => hash[tag as any]
-    : tag => {
-        let i = 0
-        for (; i < len - 1; i++) {
-          if (values[i] === tag) {
-            break
-          }
-        }
-        return i
+  const values = types.map(getTagValue(tag))
+  const findIndex = (tagValue: LiteralValue): number => {
+    let i = 0
+    for (; i < len - 1; i++) {
+      if (values[i] === tagValue) {
+        break
       }
+    }
+    return i
+  }
+  const isTagValue = (u: unknown): u is LiteralValue => values.indexOf(u as any) !== -1
   const TagValue = new Type<LiteralValue, LiteralValue, unknown>(
     values.map(l => JSON.stringify(l)).join(' | '),
     isTagValue,
-    (m, c) => (isTagValue(m) ? success(m) : failure(m, c)),
+    (u, c) => (isTagValue(u) ? success(u) : failure(u, c)),
     identity
   )
   return new TaggedUnionType<Tag, TS, TypeOf<TS[number]>, OutputOf<TS[number]>, unknown>(
@@ -1587,7 +1574,7 @@ export const taggedUnion = <Tag extends string, TS extends Array<Tagged<Tag>>>(
         return false
       }
       const tagValue = v[tag]
-      return TagValue.is(tagValue) && types[getIndex(tagValue)].is(v)
+      return isTagValue(tagValue) && types[findIndex(tagValue)].is(v)
     },
     (s, c) => {
       const dictionaryValidation = Dictionary.validate(s, c)
@@ -1599,13 +1586,13 @@ export const taggedUnion = <Tag extends string, TS extends Array<Tagged<Tag>>>(
         if (tagValueValidation.isLeft()) {
           return tagValueValidation
         } else {
-          const i = getIndex(tagValueValidation.value)
+          const i = findIndex(tagValueValidation.value)
           const type = types[i]
           return type.validate(d, appendContext(c, String(i), type))
         }
       }
     },
-    useIdentity(types, len) ? identity : a => types[getIndex(a[tag] as any)].encode(a),
+    useIdentity(types, len) ? identity : a => types[findIndex(a[tag])].encode(a),
     types,
     tag
   )
