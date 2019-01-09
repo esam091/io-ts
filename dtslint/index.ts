@@ -249,7 +249,7 @@ const x38: t.TypeOf<typeof TU1> = { type: 'b' }
 //
 
 declare const E1: t.InterfaceType<{ a: t.NumberType }, { a: number }, { a: number }, { a: number }>
-const E2 = t.exact(E1) // $ExpectType ExactType<InterfaceType<{ a: NumberType; }, { a: number; }, { a: number; }, { a: number; }>, { a: number; }, { a: number; }, { a: number; }>
+const E2 = t.exact(E1) // $ExpectType ExactT<InterfaceType<{ a: NumberType; }, { a: number; }, { a: number; }, { a: number; }>>
 
 //
 // clean / alias

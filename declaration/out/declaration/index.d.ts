@@ -1,225 +1,136 @@
 import * as t from '../src';
-export declare const T5: t.InterfaceType<{
-    e: t.InterfaceType<{
-        d: t.InterfaceType<{
-            c: t.InterfaceType<{
-                b: t.InterfaceType<{
+export declare const T5: t.InterfaceT<{
+    e: t.InterfaceT<{
+        d: t.InterfaceT<{
+            c: t.InterfaceT<{
+                b: t.InterfaceT<{
                     a: t.StringType;
-                }, {
-                    a: string;
-                }, {
-                    a: string;
-                }, unknown>;
-            }, {
-                b: {
-                    a: string;
-                };
-            }, {
-                b: {
-                    a: string;
-                };
-            }, unknown>;
-        }, {
-            c: {
-                b: {
-                    a: string;
-                };
-            };
-        }, {
-            c: {
-                b: {
-                    a: string;
-                };
-            };
-        }, unknown>;
-    }, {
-        d: {
-            c: {
-                b: {
-                    a: string;
-                };
-            };
-        };
-    }, {
-        d: {
-            c: {
-                b: {
-                    a: string;
-                };
-            };
-        };
-    }, unknown>;
-}, {
-    e: {
-        d: {
-            c: {
-                b: {
-                    a: string;
-                };
-            };
-        };
-    };
-}, {
-    e: {
-        d: {
-            c: {
-                b: {
-                    a: string;
-                };
-            };
-        };
-    };
-}, unknown>;
-export declare const P5: t.PartialType<{
-    e: t.PartialType<{
-        d: t.PartialType<{
-            c: t.PartialType<{
-                b: t.PartialType<{
+                }>;
+            }>;
+        }>;
+    }>;
+}>;
+export declare const R1: t.RefinementT<t.InterfaceT<{
+    e: t.InterfaceT<{
+        d: t.InterfaceT<{
+            c: t.InterfaceT<{
+                b: t.InterfaceT<{
                     a: t.StringType;
-                }, {
-                    a?: string | undefined;
-                }, {
-                    a?: string | undefined;
-                }, unknown>;
-            }, {
-                b?: {
-                    a?: string | undefined;
-                } | undefined;
-            }, {
-                b?: {
-                    a?: string | undefined;
-                } | undefined;
-            }, unknown>;
-        }, {
-            c?: {
-                b?: {
-                    a?: string | undefined;
-                } | undefined;
-            } | undefined;
-        }, {
-            c?: {
-                b?: {
-                    a?: string | undefined;
-                } | undefined;
-            } | undefined;
-        }, unknown>;
-    }, {
-        d?: {
-            c?: {
-                b?: {
-                    a?: string | undefined;
-                } | undefined;
-            } | undefined;
-        } | undefined;
-    }, {
-        d?: {
-            c?: {
-                b?: {
-                    a?: string | undefined;
-                } | undefined;
-            } | undefined;
-        } | undefined;
-    }, unknown>;
-}, {
-    e?: {
-        d?: {
-            c?: {
-                b?: {
-                    a?: string | undefined;
-                } | undefined;
-            } | undefined;
-        } | undefined;
-    } | undefined;
-}, {
-    e?: {
-        d?: {
-            c?: {
-                b?: {
-                    a?: string | undefined;
-                } | undefined;
-            } | undefined;
-        } | undefined;
-    } | undefined;
-}, unknown>;
-export declare const D5: t.DictionaryType<t.StringType, t.DictionaryType<t.StringType, t.DictionaryType<t.StringType, t.DictionaryType<t.StringType, t.DictionaryType<t.StringType, t.NumberType, {
-    [x: string]: number;
-}, {
-    [x: string]: number;
-}, unknown>, {
-    [x: string]: {
-        [x: string]: number;
-    };
-}, {
-    [x: string]: {
-        [x: string]: number;
-    };
-}, unknown>, {
-    [x: string]: {
-        [x: string]: {
-            [x: string]: number;
-        };
-    };
-}, {
-    [x: string]: {
-        [x: string]: {
-            [x: string]: number;
-        };
-    };
-}, unknown>, {
-    [x: string]: {
-        [x: string]: {
-            [x: string]: {
-                [x: string]: number;
-            };
-        };
-    };
-}, {
-    [x: string]: {
-        [x: string]: {
-            [x: string]: {
-                [x: string]: number;
-            };
-        };
-    };
-}, unknown>, {
-    [x: string]: {
-        [x: string]: {
-            [x: string]: {
-                [x: string]: {
-                    [x: string]: number;
-                };
-            };
-        };
-    };
-}, {
-    [x: string]: {
-        [x: string]: {
-            [x: string]: {
-                [x: string]: {
-                    [x: string]: number;
-                };
-            };
-        };
-    };
-}, unknown>;
-declare const _Person: t.InterfaceType<{
-    name: t.StringType;
-    age: t.NumberType;
-}, {
-    name: string;
-    age: number;
-}, {
-    name: string;
-    age: number;
-}, unknown>;
-export interface Person extends t.TypeOf<typeof _Person> {
-}
-export declare const Person: t.Type<Person, Person, unknown>;
-export declare const TestPerson: t.InterfaceType<{
-    person: t.Type<Person, Person, unknown>;
-}, {
-    person: Person;
-}, {
-    person: Person;
-}, unknown>;
+                }>;
+            }>;
+        }>;
+    }>;
+}>>;
+declare type R = {
+    a: number;
+    b: R | undefined | null;
+};
+export declare const Rec1: t.RecursiveType<t.Type<R, R, unknown>, R, R, unknown>;
+export declare const A1: t.ArrayT<t.InterfaceT<{
+    e: t.InterfaceT<{
+        d: t.InterfaceT<{
+            c: t.InterfaceT<{
+                b: t.InterfaceT<{
+                    a: t.StringType;
+                }>;
+            }>;
+        }>;
+    }>;
+}>>;
+export declare const P5: t.PartialT<{
+    e: t.PartialT<{
+        d: t.PartialT<{
+            c: t.PartialT<{
+                b: t.PartialT<{
+                    a: t.StringType;
+                }>;
+            }>;
+        }>;
+    }>;
+}>;
+export declare const D5: t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.NumberType>>>>>;
+export declare const U1: t.UnionT<[t.InterfaceT<{
+    e: t.InterfaceT<{
+        d: t.InterfaceT<{
+            c: t.InterfaceT<{
+                b: t.InterfaceT<{
+                    a: t.StringType;
+                }>;
+            }>;
+        }>;
+    }>;
+}>, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.NumberType>>>>>]>;
+export declare const I1: t.IntersectionT<[t.InterfaceT<{
+    e: t.InterfaceT<{
+        d: t.InterfaceT<{
+            c: t.InterfaceT<{
+                b: t.InterfaceT<{
+                    a: t.StringType;
+                }>;
+            }>;
+        }>;
+    }>;
+}>, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.NumberType>>>>>]>;
+export declare const Tu1: t.TupleT<[t.InterfaceT<{
+    e: t.InterfaceT<{
+        d: t.InterfaceT<{
+            c: t.InterfaceT<{
+                b: t.InterfaceT<{
+                    a: t.StringType;
+                }>;
+            }>;
+        }>;
+    }>;
+}>, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.NumberType>>>>>]>;
+export declare const RO1: t.ReadonlyT<t.InterfaceT<{
+    e: t.InterfaceT<{
+        d: t.InterfaceT<{
+            c: t.InterfaceT<{
+                b: t.InterfaceT<{
+                    a: t.StringType;
+                }>;
+            }>;
+        }>;
+    }>;
+}>>;
+export declare const RA1: t.ReadonlyArrayT<t.InterfaceT<{
+    e: t.InterfaceT<{
+        d: t.InterfaceT<{
+            c: t.InterfaceT<{
+                b: t.InterfaceT<{
+                    a: t.StringType;
+                }>;
+            }>;
+        }>;
+    }>;
+}>>;
+export declare const S5: t.StrictT<{
+    e: t.StrictT<{
+        d: t.StrictT<{
+            c: t.StrictT<{
+                b: t.StrictT<{
+                    a: t.StringType;
+                }>;
+            }>;
+        }>;
+    }>;
+}>;
+export declare const TU1: t.TaggedUnionT<"type", (t.InterfaceT<{
+    type: t.LiteralType<true>;
+    foo: t.StringType;
+}> | t.InterfaceT<{
+    type: t.LiteralType<false>;
+    bar: t.NumberType;
+}>)[]>;
+export declare const E1: t.ExactT<t.InterfaceT<{
+    e: t.InterfaceT<{
+        d: t.InterfaceT<{
+            c: t.InterfaceT<{
+                b: t.InterfaceT<{
+                    a: t.StringType;
+                }>;
+            }>;
+        }>;
+    }>;
+}>>;
 export {};

@@ -61,15 +61,15 @@ export interface Mixed extends Type<any, any, unknown> {
 /**
  * @since 1.0.0
  */
-export declare type TypeOf<RT extends Any> = RT['_A'];
+export declare type TypeOf<T extends any> = T['_A'];
 /**
  * @since 1.0.0
  */
-export declare type InputOf<RT extends Any> = RT['_I'];
+export declare type InputOf<T extends any> = T['_I'];
 /**
  * @since 1.0.0
  */
-export declare type OutputOf<RT extends Any> = RT['_O'];
+export declare type OutputOf<T extends any> = T['_O'];
 /**
  * @since 1.0.0
  */
@@ -153,7 +153,7 @@ export declare const success: <T>(value: T) => Either<Errors, T>;
 /**
  * @since 1.0.0
  */
-export declare class NullType extends Type<null> {
+export declare class NullType extends Type<null, null, unknown> {
     readonly _tag: 'NullType';
     constructor();
 }
@@ -165,38 +165,42 @@ export declare const nullType: NullType;
 /**
  * @since 1.0.0
  */
-export declare class UndefinedType extends Type<undefined> {
+export declare class UndefinedType extends Type<undefined, undefined, unknown> {
     readonly _tag: 'UndefinedType';
     constructor();
 }
 declare const undefinedType: UndefinedType;
 /**
  * @since 1.2.0
+ * @deprecated
  */
-export declare class VoidType extends Type<void> {
+export declare class VoidType extends Type<void, void, unknown> {
     readonly _tag: 'VoidType';
     constructor();
 }
 /**
  * @alias `void`
  * @since 1.2.0
+ * @deprecated
  */
 export declare const voidType: VoidType;
 /**
  * @since 1.0.0
+ * @deprecated
  */
-export declare class AnyType extends Type<any> {
+export declare class AnyType extends Type<any, any, unknown> {
     readonly _tag: 'AnyType';
     constructor();
 }
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export declare const any: AnyType;
 /**
  * @since 1.5.0
  */
-export declare class UnknownType extends Type<unknown> {
+export declare class UnknownType extends Type<unknown, unknown, unknown> {
     readonly _tag: 'UnknownType';
     constructor();
 }
@@ -206,19 +210,21 @@ export declare class UnknownType extends Type<unknown> {
 export declare const unknown: UnknownType;
 /**
  * @since 1.0.0
+ * @deprecated
  */
-export declare class NeverType extends Type<never> {
+export declare class NeverType extends Type<never, never, unknown> {
     readonly _tag: 'NeverType';
     constructor();
 }
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export declare const never: NeverType;
 /**
  * @since 1.0.0
  */
-export declare class StringType extends Type<string> {
+export declare class StringType extends Type<string, string, unknown> {
     readonly _tag: 'StringType';
     constructor();
 }
@@ -229,7 +235,7 @@ export declare const string: StringType;
 /**
  * @since 1.0.0
  */
-export declare class NumberType extends Type<number> {
+export declare class NumberType extends Type<number, number, unknown> {
     readonly _tag: 'NumberType';
     constructor();
 }
@@ -240,7 +246,7 @@ export declare const number: NumberType;
 /**
  * @since 1.0.0
  */
-export declare class BooleanType extends Type<boolean> {
+export declare class BooleanType extends Type<boolean, boolean, unknown> {
     readonly _tag: 'BooleanType';
     constructor();
 }
@@ -251,7 +257,7 @@ export declare const boolean: BooleanType;
 /**
  * @since 1.0.0
  */
-export declare class AnyArrayType extends Type<Array<unknown>> {
+export declare class AnyArrayType extends Type<Array<unknown>, Array<unknown>, unknown> {
     readonly _tag: 'AnyArrayType';
     constructor();
 }
@@ -259,9 +265,7 @@ declare const arrayType: AnyArrayType;
 /**
  * @since 1.0.0
  */
-export declare class AnyDictionaryType extends Type<{
-    [key: string]: unknown;
-}> {
+export declare class AnyDictionaryType extends Type<Record<string, unknown>, Record<string, unknown>, unknown> {
     readonly _tag: 'AnyDictionaryType';
     constructor();
 }
@@ -271,47 +275,54 @@ export declare class AnyDictionaryType extends Type<{
 export declare const Dictionary: AnyDictionaryType;
 /**
  * @since 1.0.0
+ * @deprecated
  */
-export declare class ObjectType extends Type<object> {
+export declare class ObjectType extends Type<object, object, unknown> {
     readonly _tag: 'ObjectType';
     constructor();
 }
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export declare const object: ObjectType;
 /**
  * @since 1.0.0
+ * @deprecated
  */
-export declare class FunctionType extends Type<Function> {
+export declare class FunctionType extends Type<Function, Function, unknown> {
     readonly _tag: 'FunctionType';
     constructor();
 }
 /**
  * @since 1.0.0
+ * @deprecated
  */
 export declare const Function: FunctionType;
 /**
  * @since 1.0.0
  */
-export declare class RefinementType<RT extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
-    readonly type: RT;
+export declare class RefinementType<T extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
+    readonly type: T;
     readonly predicate: Predicate<A>;
     readonly _tag: 'RefinementType';
-    constructor(name: string, is: RefinementType<RT, A, O, I>['is'], validate: RefinementType<RT, A, O, I>['validate'], encode: RefinementType<RT, A, O, I>['encode'], type: RT, predicate: Predicate<A>);
+    constructor(name: string, is: RefinementType<T, A, O, I>['is'], validate: RefinementType<T, A, O, I>['validate'], encode: RefinementType<T, A, O, I>['encode'], type: T, predicate: Predicate<A>);
+}
+export interface RefinementT<T extends Any> extends RefinementType<T, TypeOf<T>, OutputOf<T>, InputOf<T>> {
 }
 /**
  * @since 1.0.0
  */
-export declare const refinement: <RT extends Any>(type: RT, predicate: Predicate<RT["_A"]>, name?: string) => RefinementType<RT, RT["_A"], RT["_O"], RT["_I"]>;
+export declare const refinement: <T extends Any>(type: T, predicate: Predicate<T["_A"]>, name?: string) => RefinementT<T>;
 /**
  * @since 1.0.0
  */
-export declare const Integer: RefinementType<NumberType, number, number, unknown>;
+export declare const Integer: RefinementT<NumberType>;
+declare type LiteralValue = string | number | boolean;
 /**
  * @since 1.0.0
  */
-export declare class LiteralType<V extends string | number | boolean> extends Type<V> {
+export declare class LiteralType<V extends LiteralValue> extends Type<V, V, unknown> {
     readonly value: V;
     readonly _tag: 'LiteralType';
     constructor(name: string, is: LiteralType<V>['is'], validate: LiteralType<V>['validate'], encode: LiteralType<V>['encode'], value: V);
@@ -319,13 +330,13 @@ export declare class LiteralType<V extends string | number | boolean> extends Ty
 /**
  * @since 1.0.0
  */
-export declare const literal: <V extends string | number | boolean>(value: V, name?: string) => LiteralType<V>;
+export declare const literal: <V extends LiteralValue>(value: V, name?: string) => LiteralType<V>;
 /**
  * @since 1.0.0
  */
 export declare class KeyofType<D extends {
     [key: string]: unknown;
-}> extends Type<keyof D> {
+}> extends Type<keyof D, keyof D, unknown> {
     readonly keys: D;
     readonly _tag: 'KeyofType';
     constructor(name: string, is: KeyofType<D>['is'], validate: KeyofType<D>['validate'], encode: KeyofType<D>['encode'], keys: D);
@@ -339,28 +350,30 @@ export declare const keyof: <D extends {
 /**
  * @since 1.0.0
  */
-export declare class RecursiveType<RT extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
+export declare class RecursiveType<T extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
     private runDefinition;
     readonly _tag: 'RecursiveType';
-    constructor(name: string, is: RecursiveType<RT, A, O, I>['is'], validate: RecursiveType<RT, A, O, I>['validate'], encode: RecursiveType<RT, A, O, I>['encode'], runDefinition: () => RT);
-    readonly type: RT;
+    constructor(name: string, is: RecursiveType<T, A, O, I>['is'], validate: RecursiveType<T, A, O, I>['validate'], encode: RecursiveType<T, A, O, I>['encode'], runDefinition: () => T);
+    readonly type: T;
 }
 /**
  * @since 1.0.0
  */
-export declare const recursion: <A, O = A, I = unknown, RT extends Type<A, O, I> = Type<A, O, I>>(name: string, definition: (self: RT) => RT) => RecursiveType<RT, A, O, I>;
+export declare const recursion: <A, O = A, I = unknown, T extends Type<A, O, I> = Type<A, O, I>>(name: string, definition: (self: T) => T) => RecursiveType<T, A, O, I>;
 /**
  * @since 1.0.0
  */
-export declare class ArrayType<RT extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
-    readonly type: RT;
+export declare class ArrayType<T extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
+    readonly type: T;
     readonly _tag: 'ArrayType';
-    constructor(name: string, is: ArrayType<RT, A, O, I>['is'], validate: ArrayType<RT, A, O, I>['validate'], encode: ArrayType<RT, A, O, I>['encode'], type: RT);
+    constructor(name: string, is: ArrayType<T, A, O, I>['is'], validate: ArrayType<T, A, O, I>['validate'], encode: ArrayType<T, A, O, I>['encode'], type: T);
+}
+export interface ArrayT<T extends Mixed> extends ArrayType<T, Array<TypeOf<T>>, Array<OutputOf<T>>, unknown> {
 }
 /**
  * @since 1.0.0
  */
-export declare const array: <RT extends Mixed>(type: RT, name?: string) => ArrayType<RT, RT["_A"][], RT["_O"][], unknown>;
+export declare const array: <T extends Mixed>(type: T, name?: string) => ArrayT<T>;
 /**
  * @since 1.0.0
  */
@@ -395,11 +408,17 @@ export declare type OutputOfProps<P extends AnyProps> = {
 export interface Props {
     [key: string]: Mixed;
 }
+export interface InterfaceT<P extends Props> extends InterfaceType<P, {
+    [K in keyof P]: TypeOf<P[K]>;
+}, {
+    [K in keyof P]: OutputOf<P[K]>;
+}, unknown> {
+}
 /**
  * @alias `interface`
  * @since 1.0.0
  */
-export declare const type: <P extends Props>(props: P, name?: string) => InterfaceType<P, { [K in keyof P]: P[K]["_A"]; }, { [K in keyof P]: P[K]["_O"]; }, unknown>;
+export declare const type: <P extends Props>(props: P, name?: string) => InterfaceT<P>;
 /**
  * @since 1.0.0
  */
@@ -422,10 +441,16 @@ export declare type TypeOfPartialProps<P extends AnyProps> = {
 export declare type OutputOfPartialProps<P extends AnyProps> = {
     [K in keyof P]?: OutputOf<P[K]>;
 };
+export interface PartialT<P extends Props> extends PartialType<P, {
+    [K in keyof P]?: TypeOf<P[K]>;
+}, {
+    [K in keyof P]?: OutputOf<P[K]>;
+}, unknown> {
+}
 /**
  * @since 1.0.0
  */
-export declare const partial: <P extends Props>(props: P, name?: string) => PartialType<P, { [K in keyof P]?: P[K]["_A"] | undefined; }, { [K in keyof P]?: P[K]["_O"] | undefined; }, unknown>;
+export declare const partial: <P extends Props>(props: P, name?: string) => PartialT<P>;
 /**
  * @since 1.0.0
  */
@@ -449,17 +474,23 @@ export declare type TypeOfDictionary<D extends Any, C extends Any> = {
 export declare type OutputOfDictionary<D extends Any, C extends Any> = {
     [K in OutputOf<D>]: OutputOf<C>;
 };
+export interface DictionaryT<D extends Mixed, C extends Mixed> extends DictionaryType<D, C, {
+    [K in TypeOf<D>]: TypeOf<C>;
+}, {
+    [K in OutputOf<D>]: OutputOf<C>;
+}, unknown> {
+}
 /**
  * @since 1.0.0
  */
-export declare const dictionary: <D extends Mixed, C extends Mixed>(domain: D, codomain: C, name?: string) => DictionaryType<D, C, { [K in D["_A"]]: C["_A"]; }, { [K in D["_O"]]: C["_O"]; }, unknown>;
+export declare const dictionary: <D extends Mixed, C extends Mixed>(domain: D, codomain: C, name?: string) => DictionaryT<D, C>;
 /**
  * @since 1.0.0
  */
-export declare class UnionType<RTS extends Array<Any>, A = any, O = A, I = unknown> extends Type<A, O, I> {
-    readonly types: RTS;
+export declare class UnionType<TS extends Array<Any>, A = any, O = A, I = unknown> extends Type<A, O, I> {
+    readonly types: TS;
     readonly _tag: 'UnionType';
-    constructor(name: string, is: UnionType<RTS, A, O, I>['is'], validate: UnionType<RTS, A, O, I>['validate'], encode: UnionType<RTS, A, O, I>['encode'], types: RTS);
+    constructor(name: string, is: UnionType<TS, A, O, I>['is'], validate: UnionType<TS, A, O, I>['validate'], encode: UnionType<TS, A, O, I>['encode'], types: TS);
 }
 interface Index extends Record<string, Array<[unknown, Mixed]>> {
 }
@@ -468,17 +499,23 @@ export declare const isUnionType: (type: Mixed) => type is UnionType<Any[], any,
 export declare const isExact: (type: Mixed) => type is ExactType<Mixed, any, any, unknown>;
 export declare const getTypeIndex: (type: Mixed, override?: Mixed) => Index;
 export declare const getIndex: (types: Mixed[]) => Index;
+export interface UnionT<TS extends [Mixed, Mixed, ...Array<Mixed>]> extends UnionType<TS, TypeOf<TS[number]>, OutputOf<TS[number]>, unknown> {
+}
 /**
  * @since 1.0.0
  */
-export declare const union: <RTS extends Mixed[]>(types: RTS, name?: string) => UnionType<RTS, RTS[number]["_A"], RTS[number]["_O"], unknown>;
+export declare const union: <TS extends [Mixed, Mixed, ...Mixed[]]>(types: TS, name?: string) => UnionT<TS>;
+/**
+ * @see https://stackoverflow.com/a/50375286#50375286
+ */
+declare type UnionToIntersection<U> = (U extends any ? (u: U) => void : never) extends ((u: infer I) => void) ? I : never;
 /**
  * @since 1.0.0
  */
-export declare class IntersectionType<RTS extends Array<Any>, A = any, O = A, I = unknown> extends Type<A, O, I> {
-    readonly types: RTS;
+export declare class IntersectionType<TS extends Array<Any>, A = any, O = A, I = unknown> extends Type<A, O, I> {
+    readonly types: TS;
     readonly _tag: 'IntersectionType';
-    constructor(name: string, is: IntersectionType<RTS, A, O, I>['is'], validate: IntersectionType<RTS, A, O, I>['validate'], encode: IntersectionType<RTS, A, O, I>['encode'], types: RTS);
+    constructor(name: string, is: IntersectionType<TS, A, O, I>['is'], validate: IntersectionType<TS, A, O, I>['validate'], encode: IntersectionType<TS, A, O, I>['encode'], types: TS);
 }
 /**
  * used in `intersection` as a workaround for #234
@@ -488,54 +525,58 @@ export declare class IntersectionType<RTS extends Array<Any>, A = any, O = A, I 
 export declare type Compact<A> = {
     [K in keyof A]: A[K];
 };
+export interface IntersectionT<TS extends [Mixed, Mixed, ...Array<Mixed>]> extends IntersectionType<TS, UnionToIntersection<TypeOf<TS[number]>>, UnionToIntersection<OutputOf<TS[number]>>, unknown> {
+}
 /**
  * @since 1.0.0
  */
-export declare function intersection<A extends Mixed, B extends Mixed, C extends Mixed, D extends Mixed, E extends Mixed>(types: [A, B, C, D, E], name?: string): IntersectionType<[A, B, C, D, E], TypeOf<A> & TypeOf<B> & TypeOf<C> & TypeOf<D> & TypeOf<E>, OutputOf<A> & OutputOf<B> & OutputOf<C> & OutputOf<D> & OutputOf<E>, unknown>;
-export declare function intersection<A extends Mixed, B extends Mixed, C extends Mixed, D extends Mixed>(types: [A, B, C, D], name?: string): IntersectionType<[A, B, C, D], TypeOf<A> & TypeOf<B> & TypeOf<C> & TypeOf<D>, OutputOf<A> & OutputOf<B> & OutputOf<C> & OutputOf<D>, unknown>;
-export declare function intersection<A extends Mixed, B extends Mixed, C extends Mixed>(types: [A, B, C], name?: string): IntersectionType<[A, B, C], TypeOf<A> & TypeOf<B> & TypeOf<C>, OutputOf<A> & OutputOf<B> & OutputOf<C>, unknown>;
-export declare function intersection<A extends Mixed, B extends Mixed>(types: [A, B], name?: string): IntersectionType<[A, B], TypeOf<A> & TypeOf<B>, OutputOf<A> & OutputOf<B>, unknown>;
-export declare function intersection<A extends Mixed>(types: [A], name?: string): IntersectionType<[A], TypeOf<A>, OutputOf<A>, unknown>;
+export declare function intersection<TS extends [Mixed, Mixed, ...Array<Mixed>]>(types: TS, name?: string): IntersectionT<TS>;
 /**
  * @since 1.0.0
  */
-export declare class TupleType<RTS extends Array<Any>, A = any, O = A, I = unknown> extends Type<A, O, I> {
-    readonly types: RTS;
+export declare class TupleType<TS extends Array<Any>, A = any, O = A, I = unknown> extends Type<A, O, I> {
+    readonly types: TS;
     readonly _tag: 'TupleType';
-    constructor(name: string, is: TupleType<RTS, A, O, I>['is'], validate: TupleType<RTS, A, O, I>['validate'], encode: TupleType<RTS, A, O, I>['encode'], types: RTS);
+    constructor(name: string, is: TupleType<TS, A, O, I>['is'], validate: TupleType<TS, A, O, I>['validate'], encode: TupleType<TS, A, O, I>['encode'], types: TS);
+}
+export interface TupleT<TS extends [Mixed, Mixed, ...Array<Mixed>]> extends TupleType<TS, {
+    [K in keyof TS]: TypeOf<TS[K]>;
+}, {
+    [K in keyof TS]: OutputOf<TS[K]>;
+}, unknown> {
 }
 /**
  * @since 1.0.0
  */
-export declare function tuple<A extends Mixed, B extends Mixed, C extends Mixed, D extends Mixed, E extends Mixed>(types: [A, B, C, D, E], name?: string): TupleType<[A, B, C, D, E], [TypeOf<A>, TypeOf<B>, TypeOf<C>, TypeOf<D>, TypeOf<E>], [OutputOf<A>, OutputOf<B>, OutputOf<C>, OutputOf<D>, OutputOf<E>], unknown>;
-export declare function tuple<A extends Mixed, B extends Mixed, C extends Mixed, D extends Mixed>(types: [A, B, C, D], name?: string): TupleType<[A, B, C, D], [TypeOf<A>, TypeOf<B>, TypeOf<C>, TypeOf<D>], [OutputOf<A>, OutputOf<B>, OutputOf<C>, OutputOf<D>], unknown>;
-export declare function tuple<A extends Mixed, B extends Mixed, C extends Mixed>(types: [A, B, C], name?: string): TupleType<[A, B, C], [TypeOf<A>, TypeOf<B>, TypeOf<C>], [OutputOf<A>, OutputOf<B>, OutputOf<C>], unknown>;
-export declare function tuple<A extends Mixed, B extends Mixed>(types: [A, B], name?: string): TupleType<[A, B], [TypeOf<A>, TypeOf<B>], [OutputOf<A>, OutputOf<B>], unknown>;
-export declare function tuple<A extends Mixed>(types: [A], name?: string): TupleType<[A], [TypeOf<A>], [OutputOf<A>], unknown>;
+export declare function tuple<TS extends [Mixed, Mixed, ...Array<Mixed>]>(types: TS, name?: string): TupleT<TS>;
 /**
  * @since 1.0.0
  */
-export declare class ReadonlyType<RT extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
-    readonly type: RT;
+export declare class ReadonlyType<T extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
+    readonly type: T;
     readonly _tag: 'ReadonlyType';
-    constructor(name: string, is: ReadonlyType<RT, A, O, I>['is'], validate: ReadonlyType<RT, A, O, I>['validate'], encode: ReadonlyType<RT, A, O, I>['encode'], type: RT);
+    constructor(name: string, is: ReadonlyType<T, A, O, I>['is'], validate: ReadonlyType<T, A, O, I>['validate'], encode: ReadonlyType<T, A, O, I>['encode'], type: T);
+}
+export interface ReadonlyT<T extends Mixed> extends ReadonlyType<T, Readonly<TypeOf<T>>, Readonly<OutputOf<T>>, unknown> {
 }
 /**
  * @since 1.0.0
  */
-export declare const readonly: <RT extends Mixed>(type: RT, name?: string) => ReadonlyType<RT, Readonly<RT["_A"]>, Readonly<RT["_O"]>, unknown>;
+export declare const readonly: <T extends Mixed>(type: T, name?: string) => ReadonlyT<T>;
 /**
  * @since 1.0.0
  */
-export declare class ReadonlyArrayType<RT extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
-    readonly type: RT;
+export declare class ReadonlyArrayType<T extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
+    readonly type: T;
     readonly _tag: 'ReadonlyArrayType';
-    constructor(name: string, is: ReadonlyArrayType<RT, A, O, I>['is'], validate: ReadonlyArrayType<RT, A, O, I>['validate'], encode: ReadonlyArrayType<RT, A, O, I>['encode'], type: RT);
+    constructor(name: string, is: ReadonlyArrayType<T, A, O, I>['is'], validate: ReadonlyArrayType<T, A, O, I>['validate'], encode: ReadonlyArrayType<T, A, O, I>['encode'], type: T);
+}
+export interface ReadonlyArrayT<T extends Mixed> extends ReadonlyArrayType<T, ReadonlyArray<TypeOf<T>>, ReadonlyArray<OutputOf<T>>, unknown> {
 }
 /**
  * @since 1.0.0
  */
-export declare const readonlyArray: <RT extends Mixed>(type: RT, name?: string) => ReadonlyArrayType<RT, ReadonlyArray<RT["_A"]>, ReadonlyArray<RT["_O"]>, unknown>;
+export declare const readonlyArray: <T extends Mixed>(type: T, name?: string) => ReadonlyArrayT<T>;
 /**
  * @since 1.0.0
  */
@@ -544,12 +585,18 @@ export declare class StrictType<P, A = any, O = A, I = unknown> extends Type<A, 
     readonly _tag: 'StrictType';
     constructor(name: string, is: StrictType<P, A, O, I>['is'], validate: StrictType<P, A, O, I>['validate'], encode: StrictType<P, A, O, I>['encode'], props: P);
 }
+export interface StrictT<P extends Props> extends StrictType<P, {
+    [K in keyof P]: TypeOf<P[K]>;
+}, {
+    [K in keyof P]: OutputOf<P[K]>;
+}, unknown> {
+}
 /**
  * Specifies that only the given properties are allowed
  * @deprecated use `exact` instead
  * @since 1.0.0
  */
-export declare const strict: <P extends Props>(props: P, name?: string) => StrictType<P, { [K in keyof P]: P[K]["_A"]; }, { [K in keyof P]: P[K]["_O"]; }, unknown>;
+export declare const strict: <P extends Props>(props: P, name?: string) => StrictT<P>;
 /**
  * @since 1.3.0
  */
@@ -591,13 +638,15 @@ export declare const isTagged: <Tag extends string>(tag: Tag) => (type: Mixed) =
 /**
  * @since 1.3.0
  */
-export declare const getTagValue: <Tag extends string>(tag: Tag) => (type: Tagged<Tag, any, any>) => string | number | boolean;
+export declare const getTagValue: <Tag extends string>(tag: Tag) => (type: Tagged<Tag, any, any>) => LiteralValue;
 /**
  * @since 1.3.0
  */
-export declare class TaggedUnionType<Tag extends string, RTS extends Array<Tagged<Tag>>, A = any, O = A, I = unknown> extends UnionType<RTS, A, O, I> {
+export declare class TaggedUnionType<Tag extends string, TS extends Array<Tagged<Tag>>, A = any, O = A, I = unknown> extends UnionType<TS, A, O, I> {
     readonly tag: Tag;
-    constructor(name: string, is: TaggedUnionType<Tag, RTS, A, O, I>['is'], validate: TaggedUnionType<Tag, RTS, A, O, I>['validate'], encode: TaggedUnionType<Tag, RTS, A, O, I>['encode'], types: RTS, tag: Tag);
+    constructor(name: string, is: TaggedUnionType<Tag, TS, A, O, I>['is'], validate: TaggedUnionType<Tag, TS, A, O, I>['validate'], encode: TaggedUnionType<Tag, TS, A, O, I>['encode'], types: TS, tag: Tag);
+}
+export interface TaggedUnionT<Tag extends string, TS extends Array<Tagged<Tag>>> extends TaggedUnionType<Tag, TS, TypeOf<TS[number]>, OutputOf<TS[number]>, unknown> {
 }
 /**
  * Use `union` instead
@@ -605,14 +654,14 @@ export declare class TaggedUnionType<Tag extends string, RTS extends Array<Tagge
  * @since 1.3.0
  * @deprecated
  */
-export declare const taggedUnion: <Tag extends string, RTS extends Tagged<Tag, any, any>[]>(tag: Tag, types: RTS, name?: string) => TaggedUnionType<Tag, RTS, RTS[number]["_A"], RTS[number]["_O"], unknown>;
+export declare const taggedUnion: <Tag extends string, TS extends Tagged<Tag, any, any>[]>(tag: Tag, types: TS, name?: string) => TaggedUnionT<Tag, TS>;
 /**
  * @since 1.1.0
  */
-export declare class ExactType<RT extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
-    readonly type: RT;
+export declare class ExactType<T extends Any, A = any, O = A, I = unknown> extends Type<A, O, I> {
+    readonly type: T;
     readonly _tag: 'ExactType';
-    constructor(name: string, is: ExactType<RT, A, O, I>['is'], validate: ExactType<RT, A, O, I>['validate'], encode: ExactType<RT, A, O, I>['encode'], type: RT);
+    constructor(name: string, is: ExactType<T, A, O, I>['is'], validate: ExactType<T, A, O, I>['validate'], encode: ExactType<T, A, O, I>['encode'], type: T);
 }
 /**
  * @since 1.1.0
@@ -633,10 +682,12 @@ export interface HasPropsIntersection extends IntersectionType<Array<HasProps>, 
  * @since 1.1.0
  */
 export declare type HasProps = HasPropsRefinement | HasPropsReadonly | HasPropsIntersection | InterfaceType<any, any, any, any> | StrictType<any, any, any, any> | PartialType<any, any, any, any>;
+export interface ExactT<T extends HasProps> extends ExactType<T, TypeOf<T>, OutputOf<T>, InputOf<T>> {
+}
 /**
  * @since 1.1.0
  */
-export declare function exact<RT extends HasProps>(type: RT, name?: string): ExactType<RT, TypeOf<RT>, OutputOf<RT>, InputOf<RT>>;
+export declare function exact<T extends HasProps>(type: T, name?: string): ExactT<T>;
 /**
  * Drops the runtime type "kind"
  * @since 1.1.0
