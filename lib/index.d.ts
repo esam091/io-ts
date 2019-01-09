@@ -157,11 +157,13 @@ export declare class NullType extends Type<null, null, unknown> {
     readonly _tag: 'NullType';
     constructor();
 }
+export interface NullT extends NullType {
+}
 /**
  * @alias `null`
  * @since 1.0.0
  */
-export declare const nullType: NullType;
+export declare const nullType: NullT;
 /**
  * @since 1.0.0
  */
@@ -169,7 +171,9 @@ export declare class UndefinedType extends Type<undefined, undefined, unknown> {
     readonly _tag: 'UndefinedType';
     constructor();
 }
-declare const undefinedType: UndefinedType;
+export interface UndefinedT extends UndefinedType {
+}
+declare const undefinedType: UndefinedT;
 /**
  * @since 1.2.0
  * @deprecated
@@ -178,12 +182,14 @@ export declare class VoidType extends Type<void, void, unknown> {
     readonly _tag: 'VoidType';
     constructor();
 }
+export interface VoidT extends VoidType {
+}
 /**
  * @alias `void`
  * @since 1.2.0
  * @deprecated
  */
-export declare const voidType: VoidType;
+export declare const voidType: VoidT;
 /**
  * @since 1.0.0
  * @deprecated
@@ -192,11 +198,13 @@ export declare class AnyType extends Type<any, any, unknown> {
     readonly _tag: 'AnyType';
     constructor();
 }
+export interface AnyT extends AnyType {
+}
 /**
  * @since 1.0.0
  * @deprecated
  */
-export declare const any: AnyType;
+export declare const any: AnyT;
 /**
  * @since 1.5.0
  */
@@ -204,10 +212,12 @@ export declare class UnknownType extends Type<unknown, unknown, unknown> {
     readonly _tag: 'UnknownType';
     constructor();
 }
+export interface UnknownT extends UnknownType {
+}
 /**
  * @since 1.5.0
  */
-export declare const unknown: UnknownType;
+export declare const unknown: UnknownT;
 /**
  * @since 1.0.0
  * @deprecated
@@ -216,11 +226,13 @@ export declare class NeverType extends Type<never, never, unknown> {
     readonly _tag: 'NeverType';
     constructor();
 }
+export interface NeverT extends NeverType {
+}
 /**
  * @since 1.0.0
  * @deprecated
  */
-export declare const never: NeverType;
+export declare const never: NeverT;
 /**
  * @since 1.0.0
  */
@@ -228,10 +240,12 @@ export declare class StringType extends Type<string, string, unknown> {
     readonly _tag: 'StringType';
     constructor();
 }
+export interface StringT extends StringType {
+}
 /**
  * @since 1.0.0
  */
-export declare const string: StringType;
+export declare const string: StringT;
 /**
  * @since 1.0.0
  */
@@ -239,10 +253,12 @@ export declare class NumberType extends Type<number, number, unknown> {
     readonly _tag: 'NumberType';
     constructor();
 }
+export interface NumberT extends NumberType {
+}
 /**
  * @since 1.0.0
  */
-export declare const number: NumberType;
+export declare const number: NumberT;
 /**
  * @since 1.0.0
  */
@@ -250,10 +266,12 @@ export declare class BooleanType extends Type<boolean, boolean, unknown> {
     readonly _tag: 'BooleanType';
     constructor();
 }
+export interface BooleanT extends BooleanType {
+}
 /**
  * @since 1.0.0
  */
-export declare const boolean: BooleanType;
+export declare const boolean: BooleanT;
 /**
  * @since 1.0.0
  */
@@ -261,7 +279,12 @@ export declare class AnyArrayType extends Type<Array<unknown>, Array<unknown>, u
     readonly _tag: 'AnyArrayType';
     constructor();
 }
-declare const arrayType: AnyArrayType;
+export interface UnknownArrayT extends AnyArrayType {
+}
+/**
+ * @since 1.6.0
+ */
+export declare const UnknownArray: UnknownArrayT;
 /**
  * @since 1.0.0
  */
@@ -269,10 +292,12 @@ export declare class AnyDictionaryType extends Type<Record<string, unknown>, Rec
     readonly _tag: 'AnyDictionaryType';
     constructor();
 }
+export interface UnknownRecordT extends AnyDictionaryType {
+}
 /**
- * @since 1.0.0
+ * @since 1.6.0
  */
-export declare const Dictionary: AnyDictionaryType;
+export declare const UnknownRecord: UnknownRecordT;
 /**
  * @since 1.0.0
  * @deprecated
@@ -281,11 +306,13 @@ export declare class ObjectType extends Type<object, object, unknown> {
     readonly _tag: 'ObjectType';
     constructor();
 }
+export interface ObjectT extends ObjectType {
+}
 /**
  * @since 1.0.0
  * @deprecated
  */
-export declare const object: ObjectType;
+export declare const object: ObjectT;
 /**
  * @since 1.0.0
  * @deprecated
@@ -294,11 +321,13 @@ export declare class FunctionType extends Type<Function, Function, unknown> {
     readonly _tag: 'FunctionType';
     constructor();
 }
+export interface FunctionT extends FunctionType {
+}
 /**
  * @since 1.0.0
  * @deprecated
  */
-export declare const Function: FunctionType;
+export declare const Function: FunctionT;
 /**
  * @since 1.0.0
  */
@@ -320,7 +349,7 @@ export declare const refinement: <T extends Any>(type: T, predicate: Predicate<T
 /**
  * @since 1.0.0
  */
-export declare const Integer: RefinementT<NumberType>;
+export declare const Integer: RefinementT<NumberT>;
 declare type LiteralValue = string | number | boolean;
 /**
  * @since 1.0.0
@@ -330,26 +359,26 @@ export declare class LiteralType<V extends LiteralValue> extends Type<V, V, unkn
     readonly _tag: 'LiteralType';
     constructor(name: string, is: LiteralType<V>['is'], validate: LiteralType<V>['validate'], encode: LiteralType<V>['encode'], value: V);
 }
-/**
- * @since 1.0.0
- */
-export declare const literal: <V extends LiteralValue>(value: V, name?: string) => LiteralType<V>;
-/**
- * @since 1.0.0
- */
-export declare class KeyofType<D extends {
-    [key: string]: unknown;
-}> extends Type<keyof D, keyof D, unknown> {
-    readonly keys: D;
-    readonly _tag: 'KeyofType';
-    constructor(name: string, is: KeyofType<D>['is'], validate: KeyofType<D>['validate'], encode: KeyofType<D>['encode'], keys: D);
+export interface LiteralT<V extends LiteralValue> extends LiteralType<V> {
 }
 /**
  * @since 1.0.0
  */
-export declare const keyof: <D extends {
-    [key: string]: unknown;
-}>(keys: D, name?: string) => KeyofType<D>;
+export declare const literal: <V extends LiteralValue>(value: V, name?: string) => LiteralT<V>;
+/**
+ * @since 1.0.0
+ */
+export declare class KeyofType<D extends Record<string, unknown>> extends Type<keyof D, keyof D, unknown> {
+    readonly keys: D;
+    readonly _tag: 'KeyofType';
+    constructor(name: string, is: KeyofType<D>['is'], validate: KeyofType<D>['validate'], encode: KeyofType<D>['encode'], keys: D);
+}
+export interface KeyofT<D extends Record<string, unknown>> extends KeyofType<D> {
+}
+/**
+ * @since 1.0.0
+ */
+export declare const keyof: <D extends Record<string, unknown>>(keys: D, name?: string) => KeyofT<D>;
 /**
  * @since 1.0.0
  */
@@ -761,4 +790,4 @@ export declare type Exact<T, X extends T> = T & {
 export declare function alias<A, O, P, I>(type: PartialType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => PartialType<PP, AA, OO, II>;
 export declare function alias<A, O, P, I>(type: StrictType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => StrictType<PP, AA, OO, II>;
 export declare function alias<A, O, P, I>(type: InterfaceType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => InterfaceType<PP, AA, OO, II>;
-export { nullType as null, undefinedType as undefined, arrayType as Array, type as interface, voidType as void };
+export { nullType as null, undefinedType as undefined, UnknownArray as Array, type as interface, voidType as void, UnknownRecord as Dictionary };

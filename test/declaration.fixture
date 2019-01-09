@@ -4,7 +4,7 @@ export declare const T5: t.InterfaceT<{
         d: t.InterfaceT<{
             c: t.InterfaceT<{
                 b: t.InterfaceT<{
-                    a: t.StringType;
+                    a: t.StringT;
                 }>;
             }>;
         }>;
@@ -15,7 +15,7 @@ export declare const R1: t.RefinementT<t.InterfaceT<{
         d: t.InterfaceT<{
             c: t.InterfaceT<{
                 b: t.InterfaceT<{
-                    a: t.StringType;
+                    a: t.StringT;
                 }>;
             }>;
         }>;
@@ -31,7 +31,7 @@ export declare const A1: t.ArrayT<t.InterfaceT<{
         d: t.InterfaceT<{
             c: t.InterfaceT<{
                 b: t.InterfaceT<{
-                    a: t.StringType;
+                    a: t.StringT;
                 }>;
             }>;
         }>;
@@ -42,52 +42,52 @@ export declare const P5: t.PartialT<{
         d: t.PartialT<{
             c: t.PartialT<{
                 b: t.PartialT<{
-                    a: t.StringType;
+                    a: t.StringT;
                 }>;
             }>;
         }>;
     }>;
 }>;
-export declare const D5: t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.NumberType>>>>>;
+export declare const D5: t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.NumberT>>>>>;
 export declare const U1: t.UnionT<[t.InterfaceT<{
     e: t.InterfaceT<{
         d: t.InterfaceT<{
             c: t.InterfaceT<{
                 b: t.InterfaceT<{
-                    a: t.StringType;
+                    a: t.StringT;
                 }>;
             }>;
         }>;
     }>;
-}>, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.NumberType>>>>>]>;
+}>, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.NumberT>>>>>]>;
 export declare const I1: t.IntersectionT<[t.InterfaceT<{
     e: t.InterfaceT<{
         d: t.InterfaceT<{
             c: t.InterfaceT<{
                 b: t.InterfaceT<{
-                    a: t.StringType;
+                    a: t.StringT;
                 }>;
             }>;
         }>;
     }>;
-}>, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.NumberType>>>>>]>;
+}>, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.NumberT>>>>>]>;
 export declare const Tu1: t.TupleT<[t.InterfaceT<{
     e: t.InterfaceT<{
         d: t.InterfaceT<{
             c: t.InterfaceT<{
                 b: t.InterfaceT<{
-                    a: t.StringType;
+                    a: t.StringT;
                 }>;
             }>;
         }>;
     }>;
-}>, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.DictionaryT<t.StringType, t.NumberType>>>>>]>;
+}>, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.DictionaryT<t.StringT, t.NumberT>>>>>]>;
 export declare const RO1: t.ReadonlyT<t.InterfaceT<{
     e: t.InterfaceT<{
         d: t.InterfaceT<{
             c: t.InterfaceT<{
                 b: t.InterfaceT<{
-                    a: t.StringType;
+                    a: t.StringT;
                 }>;
             }>;
         }>;
@@ -98,7 +98,7 @@ export declare const RA1: t.ReadonlyArrayT<t.InterfaceT<{
         d: t.InterfaceT<{
             c: t.InterfaceT<{
                 b: t.InterfaceT<{
-                    a: t.StringType;
+                    a: t.StringT;
                 }>;
             }>;
         }>;
@@ -109,25 +109,25 @@ export declare const S5: t.StrictT<{
         d: t.StrictT<{
             c: t.StrictT<{
                 b: t.StrictT<{
-                    a: t.StringType;
+                    a: t.StringT;
                 }>;
             }>;
         }>;
     }>;
 }>;
 export declare const TU1: t.TaggedUnionT<"type", [t.InterfaceT<{
-    type: t.LiteralType<true>;
-    foo: t.StringType;
+    type: t.LiteralT<true>;
+    foo: t.StringT;
 }>, t.InterfaceT<{
-    type: t.LiteralType<false>;
-    bar: t.NumberType;
+    type: t.LiteralT<false>;
+    bar: t.NumberT;
 }>]>;
 export declare const E1: t.ExactT<t.InterfaceT<{
     e: t.InterfaceT<{
         d: t.InterfaceT<{
             c: t.InterfaceT<{
                 b: t.InterfaceT<{
-                    a: t.StringType;
+                    a: t.StringT;
                 }>;
             }>;
         }>;
