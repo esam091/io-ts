@@ -1088,30 +1088,33 @@ export class UnionType<CS extends Array<Any>, A = any, O = A, I = unknown> exten
 
 interface Index extends Record<string, Array<[unknown, Mixed]>> {}
 
-const isLiteralType = (type: Mixed): type is LiteralType<any> => type instanceof LiteralType
+const isLiteralCodec = (codec: Mixed): codec is LiteralType<any> => (codec as any)._tag === 'LiteralType'
 
-const isInterfaceType = (type: Mixed): type is InterfaceType<Props> => type instanceof InterfaceType
+const isInterfaceCodec = (codec: Mixed): codec is InterfaceType<Props> => (codec as any)._tag === 'InterfaceType'
 
-const isStrictType = (type: Mixed): type is StrictType<Props> => type instanceof StrictType
+const isStrictCodec = (codec: Mixed): codec is StrictType<Props> => (codec as any)._tag === 'StrictType'
 
-export const isIntersectionType = (type: Mixed): type is IntersectionType<Array<Any>> =>
-  type instanceof IntersectionType
+export const isIntersectionCodec = (codec: Mixed): codec is IntersectionType<Array<Any>> =>
+  (codec as any)._tag === 'IntersectionType'
 
-export const isUnionType = (type: Mixed): type is UnionType<Array<Any>> => type instanceof UnionType
+export const isUnionCodec = (codec: Mixed): codec is UnionType<Array<Any>> => (codec as any)._tag === 'UnionType'
 
-export const isExact = (type: Mixed): type is ExactType<Mixed> => type instanceof ExactType
+export const isExactCodec = (codec: Mixed): codec is ExactType<Mixed> => (codec as any)._tag === 'ExactType'
 
+/**
+ * @internal
+ */
 export const getTypeIndex = (type: Mixed, override: Mixed = type): Index => {
   let r: Index = {}
-  if (isInterfaceType(type) || isStrictType(type)) {
+  if (isInterfaceCodec(type) || isStrictCodec(type)) {
     for (let k in type.props) {
       const prop = type.props[k]
-      if (isLiteralType(prop)) {
+      if (isLiteralCodec(prop)) {
         const value = prop.value
         r[k] = [[value, override]]
       }
     }
-  } else if (isIntersectionType(type)) {
+  } else if (isIntersectionCodec(type)) {
     const types = type.types
     r = getTypeIndex(types[0], type)
     for (let i = 1; i < types.length; i++) {
@@ -1124,15 +1127,31 @@ export const getTypeIndex = (type: Mixed, override: Mixed = type): Index => {
         }
       }
     }
-  } else if (isUnionType(type)) {
+  } else if (isUnionCodec(type)) {
     return getIndex(type.types)
-  } else if (isExact(type)) {
+  } else if (isExactCodec(type)) {
     return getTypeIndex(type.type, type)
   }
   return r
 }
 
+const isIndexableCodec = (codec: Mixed): boolean => {
+  return (
+    isInterfaceCodec(codec) ||
+    isExactCodec(codec) ||
+    isIntersectionCodec(codec) ||
+    isUnionCodec(codec) ||
+    isStrictCodec(codec)
+  )
+}
+
+/**
+ * @internal
+ */
 export const getIndex = (types: Array<Mixed>): Index => {
+  if (!types.every(isIndexableCodec)) {
+    return {}
+  }
   const r: Index = getTypeIndex(types[0])
   for (let i = 1; i < types.length; i++) {
     const ti = getTypeIndex(types[i])

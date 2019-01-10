@@ -585,10 +585,16 @@ export declare class UnionType<CS extends Array<Any>, A = any, O = A, I = unknow
 }
 interface Index extends Record<string, Array<[unknown, Mixed]>> {
 }
-export declare const isIntersectionType: (type: Mixed) => type is IntersectionType<Any[], any, any, unknown>;
-export declare const isUnionType: (type: Mixed) => type is UnionType<Any[], any, any, unknown>;
-export declare const isExact: (type: Mixed) => type is ExactType<Mixed, any, any, unknown>;
+export declare const isIntersectionCodec: (codec: Mixed) => codec is IntersectionType<Any[], any, any, unknown>;
+export declare const isUnionCodec: (codec: Mixed) => codec is UnionType<Any[], any, any, unknown>;
+export declare const isExactCodec: (codec: Mixed) => codec is ExactType<Mixed, any, any, unknown>;
+/**
+ * @internal
+ */
 export declare const getTypeIndex: (type: Mixed, override?: Mixed) => Index;
+/**
+ * @internal
+ */
 export declare const getIndex: (types: Mixed[]) => Index;
 /**
  * @since 1.6.0
