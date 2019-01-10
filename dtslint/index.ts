@@ -418,13 +418,7 @@ export function interfaceWithOptionals<RequiredProps extends t.Props, OptionalPr
   required: RequiredProps,
   optional: OptionalProps,
   name?: string
-): t.IntersectionType<
-  [
-    t.InterfaceType<RequiredProps, t.TypeOfProps<RequiredProps>>,
-    t.PartialType<OptionalProps, t.TypeOfPartialProps<OptionalProps>>
-  ],
-  t.TypeOfProps<RequiredProps> & t.TypeOfPartialProps<OptionalProps>
-> {
+): t.IntersectionC<[t.TypeC<RequiredProps>, t.PartialC<OptionalProps>]> {
   return t.intersection([t.interface(required), t.partial(optional)], name)
 }
 
