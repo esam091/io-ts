@@ -854,4 +854,25 @@ export declare type Exact<T, X extends T> = T & {
 export declare function alias<A, O, P, I>(codec: PartialType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => PartialType<PP, AA, OO, II>;
 export declare function alias<A, O, P, I>(codec: StrictType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => StrictType<PP, AA, OO, II>;
 export declare function alias<A, O, P, I>(codec: InterfaceType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => InterfaceType<PP, AA, OO, II>;
-export { nullType as null, undefinedCodec as undefined, UnknownArray as Array, type as interface, voidType as void, Codec as Type, UnknownRecord as Dictionary, record as dictionary };
+/**
+ * Use `record` instead
+ * @deprecated
+ */
+export declare const dictionary: <D extends Mixed, C extends Mixed>(domain: D, codomain: C, name?: string) => RecordC<D, C>;
+/**
+ * Use `UnknownRecord` instead
+ * @deprecated
+ */
+export declare const Dictionary: UnknownRecordC;
+/**
+ * Use `Codec` instead
+ * @deprecated
+ */
+export interface Type<A, O = A, I = unknown> extends Codec<A, O, I> {
+}
+/**
+ * Use `Codec` instead
+ * @deprecated
+ */
+export declare const Type: typeof Codec;
+export { nullType as null, undefinedCodec as undefined, UnknownArray as Array, type as interface, voidType as void };

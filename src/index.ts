@@ -1903,13 +1903,28 @@ export function alias<A, O, I>(
   return () => codec as any
 }
 
-export {
-  nullType as null,
-  undefinedCodec as undefined,
-  UnknownArray as Array,
-  type as interface,
-  voidType as void,
-  Codec as Type,
-  UnknownRecord as Dictionary,
-  record as dictionary
-}
+/**
+ * Use `record` instead
+ * @deprecated
+ */
+export const dictionary = record
+
+/**
+ * Use `UnknownRecord` instead
+ * @deprecated
+ */
+export const Dictionary = UnknownRecord
+
+/**
+ * Use `Codec` instead
+ * @deprecated
+ */
+export interface Type<A, O = A, I = unknown> extends Codec<A, O, I> {}
+
+/**
+ * Use `Codec` instead
+ * @deprecated
+ */
+export const Type = Codec
+
+export { nullType as null, undefinedCodec as undefined, UnknownArray as Array, type as interface, voidType as void }

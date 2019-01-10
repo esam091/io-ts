@@ -113,8 +113,8 @@ type Assert12 = t.TypeOf<typeof IN2> // $ExpectType { a: number; } & { b: string
 const x17: t.TypeOf<typeof IN2> = { a: 1 }
 const x18: t.TypeOf<typeof IN2> = { a: 1, b: 's' }
 
-declare function testIntersectionInput<T>(x: t.Type<Record<keyof T, string>, any, unknown>): void
-declare function testIntersectionOuput<T>(x: t.Type<any, Record<keyof T, string>, unknown>): void
+declare function testIntersectionInput<T>(x: t.Codec<Record<keyof T, string>, any, unknown>): void
+declare function testIntersectionOuput<T>(x: t.Codec<any, Record<keyof T, string>, unknown>): void
 const QueryString = t.intersection([
   t.interface({
     a: t.string
@@ -443,7 +443,7 @@ import { TaskEither } from 'fp-ts/lib/TaskEither'
 
 // tslint:disable-next-line:strict-export-declare-modifiers
 declare function withValidation<L, A>(
-  type: t.Type<A>,
+  type: t.Codec<A>,
   f: (errors: t.Errors) => L,
   fa: TaskEither<L, A>
 ): TaskEither<L, A>
@@ -462,3 +462,18 @@ type UnionToIntersection<U> = (U extends any ? (u: U) => void : never) extends (
 type UnionToIntersection1 = UnionToIntersection<string | string> // $ExpectType string
 type UnionToIntersection2 = UnionToIntersection<string | number> // $ExpectType string & number
 type UnionToIntersection3 = UnionToIntersection<{ a: string } | { b: number }> // $ExpectType { a: string; } & { b: number; }
+
+//
+// Type
+//
+
+type T1 = t.Type<string, string, unknown>
+
+const isString = (u: unknown): u is string => typeof u === 'string'
+
+const string = new t.Type<string, string, unknown>(
+  'string',
+  isString,
+  (u, c) => (isString(u) ? t.success(u) : t.failure(u, c)),
+  t.identity
+)
