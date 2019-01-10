@@ -108,11 +108,11 @@ export declare class Codec<A, O, I> implements Decoder<I, A>, Encoder<A, O> {
     validate: Validate<I, A>, 
     /** converts a value of type A to a value of type O */
     encode: Encode<A, O>);
+    /** a version of `validate` with a default context */
+    decode(i: I): Validation<A>;
     pipe<B, IB, A extends IB, OB extends A>(this: Codec<A, O, I>, ab: Codec<B, OB, IB>, name?: string): Codec<B, O, I>;
     asDecoder(): Decoder<I, A>;
     asEncoder(): Encoder<A, O>;
-    /** a version of `validate` with a default context */
-    decode(i: I): Validation<A>;
 }
 /**
  * @since 1.0.0
@@ -864,11 +864,6 @@ export declare const Dictionary: UnknownRecordC;
  * Use `Codec` instead
  * @deprecated
  */
-export interface Type<A, O = A, I = unknown> extends Codec<A, O, I> {
+export declare class Type<A, O = A, I = unknown> extends Codec<A, O, I> {
 }
-/**
- * Use `Codec` instead
- * @deprecated
- */
-export declare const Type: typeof Codec;
 export { nullType as null, undefinedCodec as undefined, UnknownArray as Array, type as interface, voidType as void };

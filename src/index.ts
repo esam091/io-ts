@@ -115,7 +115,10 @@ export class Codec<A, O, I> implements Decoder<I, A>, Encoder<A, O> {
     /** converts a value of type A to a value of type O */
     readonly encode: Encode<A, O>
   ) {}
-
+  /** a version of `validate` with a default context */
+  decode(i: I): Validation<A> {
+    return this.validate(i, getDefaultContext(this))
+  }
   pipe<B, IB, A extends IB, OB extends A>(
     this: Codec<A, O, I>,
     ab: Codec<B, OB, IB>,
@@ -140,10 +143,6 @@ export class Codec<A, O, I> implements Decoder<I, A>, Encoder<A, O> {
   }
   asEncoder(): Encoder<A, O> {
     return this
-  }
-  /** a version of `validate` with a default context */
-  decode(i: I): Validation<A> {
-    return this.validate(i, getDefaultContext(this))
   }
 }
 
@@ -1915,12 +1914,6 @@ export const Dictionary = UnknownRecord
  * Use `Codec` instead
  * @deprecated
  */
-export interface Type<A, O = A, I = unknown> extends Codec<A, O, I> {}
-
-/**
- * Use `Codec` instead
- * @deprecated
- */
-export const Type = Codec
+export class Type<A, O = A, I = unknown> extends Codec<A, O, I> {}
 
 export { nullType as null, undefinedCodec as undefined, UnknownArray as Array, type as interface, voidType as void }
