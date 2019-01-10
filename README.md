@@ -64,7 +64,7 @@ const Person = t.type({
 })
 
 // validation succeeded
-Person.decode(JSON.parse('{"name":"Giulio","age":43}')) // => Right({name: "Giulio", age: 43})
+Person.decode(JSON.parse('{"name":"Giulio","age":45}')) // => Right({name: "Giulio", age: 45})
 
 // validation failed
 Person.decode(JSON.parse('{"name":"Giulio"}')) // => Left([...])
@@ -144,7 +144,7 @@ console.log(getPaths(Person.decode({}))) // => [ '.name', '.age' ]
 
 # TypeScript integration
 
-codecs can be inspected
+Codecs can be inspected
 
 ![instrospection](docs/images/introspection.png)
 
@@ -158,10 +158,10 @@ Note that the type annotation isn't needed, TypeScript infers the type automatic
 Static types can be extracted from codecs using the `TypeOf` operator
 
 ```ts
-interface IPerson extends t.TypeOf<typeof Person> {}
+type Person = t.TypeOf<typeof Person>
 
 // same as
-interface IPerson {
+type Person = {
   name: string
   age: number
 }
@@ -173,36 +173,36 @@ interface IPerson {
 import * as t from 'io-ts'
 ```
 
-| Type                      | TypeScript                              | codec / combinator                                    |
-| ------------------------- | --------------------------------------- | ----------------------------------------------------- |
-| null                      | `null`                                  | `t.null` or `t.nullType`                              |
-| undefined                 | `undefined`                             | `t.undefined`                                         |
-| void                      | `void`                                  | `t.void` or `t.voidType`                              |
-| string                    | `string`                                | `t.string`                                            |
-| number                    | `number`                                | `t.number`                                            |
-| boolean                   | `boolean`                               | `t.boolean`                                           |
-| any                       | `any`                                   | `t.any`                                               |
-| never                     | `never`                                 | `t.never`                                             |
-| object                    | `object`                                | `t.object`                                            |
-| integer                   | ✘                                       | `t.Integer`                                           |
-| array of any              | `Array<mixed>`                          | `t.Array`                                             |
-| array of type             | `Array<A>`                              | `t.array(A)`                                          |
-| dictionary of any         | `{ [key: string]: mixed }`              | `t.Dictionary`                                        |
-| dictionary of type        | `{ [K in A]: B }`                       | `t.dictionary(A, B)`                                  |
-| function                  | `Function`                              | `t.Function`                                          |
-| literal                   | `'s'`                                   | `t.literal('s')`                                      |
-| partial                   | `Partial<{ name: string }>`             | `t.partial({ name: t.string })`                       |
-| readonly                  | `Readonly<T>`                           | `t.readonly(T)`                                       |
-| readonly array            | `ReadonlyArray<number>`                 | `t.readonlyArray(t.number)`                           |
-| type alias                | `type A = { name: string }`             | `t.type({ name: t.string })`                          |
-| tuple                     | `[ A, B ]`                              | `t.tuple([ A, B ])`                                   |
-| union                     | `A \| B`                                | `t.union([ A, B ])` or `t.taggedUnion(tag, [ A, B ])` |
-| intersection              | `A & B`                                 | `t.intersection([ A, B ])`                            |
-| keyof                     | `keyof M`                               | `t.keyof(M)`                                          |
-| recursive types           | see [Recursive types](#recursive-types) | `t.recursion(name, definition)`                       |
-| refinement                | ✘                                       | `t.refinement(A, predicate)`                          |
-| exact types               | ✘                                       | `t.exact(type)`                                       |
-| strict types (deprecated) | ✘                                       | `t.strict({ name: t.string })`                        |
+| Type              | TypeScript                  | codec / combinator                          |
+| ----------------- | --------------------------- | ------------------------------------------- |
+| null              | `null`                      | `t.null`                                    |
+| undefined         | `undefined`                 | `t.undefined`                               |
+| string            | `string`                    | `t.string`                                  |
+| number            | `number`                    | `t.number`                                  |
+| boolean           | `boolean`                   | `t.boolean`                                 |
+| integer           | ✘                           | `t.Integer`                                 |
+| array of unknown  | `Array<unknown>`            | `t.UnknownArray`                            |
+| array of type     | `Array<A>`                  | `t.array(A)`                                |
+| record of unknown | `{ [key: string]: mixed }`  | `t.UnknownRecord`                           |
+| record of type    | `{ [K in A]: B }`           | `t.record(A, B)`                            |
+| literal           | `'s'`                       | `t.literal('s')`                            |
+| partial           | `Partial<{ name: string }>` | `t.partial({ name: t.string })`             |
+| readonly          | `Readonly<T>`               | `t.readonly(T)`                             |
+| readonly array    | `ReadonlyArray<number>`     | `t.readonlyArray(t.number)`                 |
+| type alias        | `type A = { name: string }` | `t.type({ name: t.string })`                |
+| tuple             | `[ A, B ]`                  | `t.tuple([ A, B ])`                         |
+| union             | `A \| B`                    | `t.union([ A, B ])`                         |
+| intersection      | `A & B`                     | `t.intersection([ A, B ])`                  |
+| keyof             | `keyof M`                   | `t.keyof(M)`                                |
+| recursive types   |                             | `t.recursion(name, definition)`             |
+| refinement        | ✘                           | `t.refinement(A, predicate)`                |
+| exact types       | ✘                           | `t.exact(type)`                             |
+| strict types      | ✘                           | `t.strict({ name: t.string })` (deprecated) |
+| void              | `void`                      | `t.void` (deprecated)                       |
+| any               | `any`                       | `t.any` (deprecated)                        |
+| never             | `never`                     | `t.never` (deprecated)                      |
+| object            | `object`                    | `t.object` (deprecated)                     |
+| function          | `Function`                  | `t.Function` (deprecated)                   |
 
 # Recursive types
 
@@ -251,26 +251,6 @@ const Bar: t.RecursiveType<t.Type<IBar>, IBar> = t.recursion<IBar>('Bar', _ =>
 )
 
 const FooBar = t.taggedUnion('type', [Foo, Bar])
-```
-
-# Tagged unions
-
-If you are encoding tagged unions, instead of the general purpose `union` combinator, you may want to use the
-`taggedUnion` combinator in order to get better performances
-
-```ts
-const A = t.type({
-  tag: t.literal('A'),
-  foo: t.string
-})
-
-const B = t.type({
-  tag: t.literal('B'),
-  bar: t.number
-})
-
-// the actual presence of the tag is statically checked
-const U = t.taggedUnion('tag', [A, B])
 ```
 
 # Refinements
@@ -332,12 +312,13 @@ const B = t.partial({
 
 const C = t.intersection([A, B])
 
-interface CT extends t.TypeOf<typeof C> {}
+type C = t.TypeOf<typeof C>
 
 // same as
-type CT = {
+type C = {
   foo: string
-  bar?: number
+} & {
+  bar?: number | undefined
 }
 ```
 
@@ -351,10 +332,10 @@ const Person = t.type({
 
 const PartialPerson = t.partial(Person.props)
 
-interface PartialPerson extends t.TypeOf<typeof PartialPerson> {}
+type PartialPerson = t.TypeOf<typeof PartialPerson>
 
 // same as
-interface PartialPerson {
+type PartialPerson = {
   name?: string
   age?: number
 }
@@ -368,11 +349,11 @@ You can define your own types. Let's see an example
 import * as t from 'io-ts'
 
 // represents a Date from an ISO string
-const DateFromString = new t.Type<Date, string>(
+const DateFromString = new t.Codec<Date, string, unknown>(
   'DateFromString',
-  (m): m is Date => m instanceof Date,
-  (m, c) =>
-    t.string.validate(m, c).chain(s => {
+  (u): u is Date => u instanceof Date,
+  (u, c) =>
+    t.string.validate(u, c).chain(s => {
       const d = new Date(s)
       return isNaN(d.getTime()) ? t.failure(s, c) : t.success(d)
     }),
@@ -393,6 +374,7 @@ Note that you can **deserialize** while validating.
 # Generic Types
 
 Polymorphic codecs are represented using functions.
+
 For example, the following typescript:
 
 ```ts
@@ -410,12 +392,14 @@ Would be:
 
 ```ts
 import * as t from 'io-ts'
-const ResponseBody = <RT extends t.Mixed>(type: RT) =>
-  t.interface({
+
+const ResponseBody = <C extends t.Mixed>(type: C) =>
+  t.type({
     result: type,
     _links: Links
   })
-const Links = t.interface({
+
+const Links = t.type({
   previous: t.string,
   next: t.string
 })
@@ -424,29 +408,11 @@ const Links = t.interface({
 And used like:
 
 ```ts
-const UserModel = t.interface({ name: t.string })
+const UserModel = t.type({
+  name: t.string
+})
+
 functionThatRequiresRuntimeType(ResponseBody(t.array(UserModel)), ...params)
-```
-
-# Piping
-
-You can pipe two codecs if their type parameters do align
-
-```ts
-const NumberDecoder = new t.Type<number, string, string>(
-  'NumberDecoder',
-  t.number.is,
-  (s, c) => {
-    const n = parseFloat(s)
-    return isNaN(n) ? t.failure(s, c) : t.success(n)
-  },
-  String
-)
-
-const NumberFromString = t.string.pipe(
-  NumberDecoder,
-  'NumberFromString'
-)
 ```
 
 # Tips and Tricks
@@ -461,9 +427,9 @@ import { Either, right } from 'fp-ts/lib/Either'
 
 const { NODE_ENV } = process.env
 
-export function unsafeDecode<A, O, I>(value: I, type: t.Type<A, O, I>): Either<t.Errors, A> {
-  if (NODE_ENV !== 'production' || type.encode !== t.identity) {
-    return type.decode(value)
+export function unsafeDecode<A, O, I>(value: I, codec: t.Codec<A, O, I>): Either<t.Errors, A> {
+  if (NODE_ENV !== 'production' || codec.encode !== t.identity) {
+    return codec.decode(value)
   } else {
     // unsafe cast
     return right(value as any)
@@ -474,9 +440,9 @@ export function unsafeDecode<A, O, I>(value: I, type: t.Type<A, O, I>): Either<t
 
 import { failure } from 'io-ts/lib/PathReporter'
 
-export function unsafeGet<A, O, I>(value: I, type: t.Type<A, O, I>): A {
-  if (NODE_ENV !== 'production' || type.encode !== t.identity) {
-    return type.decode(value).getOrElseL(errors => {
+export function unsafeGet<A, O, I>(value: I, codec: t.Codec<A, O, I>): A {
+  if (NODE_ENV !== 'production' || codec.encode !== t.identity) {
+    return codec.decode(value).getOrElseL(errors => {
       throw new Error(failure(errors).join('\n'))
     })
   } else {
@@ -511,86 +477,3 @@ Benefits
 - unique check for free
 - better performance
 - quick info stays responsive
-
-# Known issues
-
-VS Code might display weird types for nested types
-
-```ts
-const NestedInterface = t.type({
-  foo: t.string,
-  bar: t.type({
-    baz: t.string
-  })
-})
-
-type NestedInterfaceType = t.TypeOf<typeof NestedInterface>
-/*
-Hover on NestedInterfaceType will display
-
-type NestedInterfaceType = {
-    foo: string;
-    bar: t.TypeOfProps<{
-        baz: t.StringType;
-    }>;
-}
-
-instead of
-
-type NestedInterfaceType = {
-  foo: string;
-  bar: {
-    baz: string
-  }
-}
-*/
-```
-
-## Solution: the `clean` and `alias` functions
-
-The pattern
-
-```ts
-// private codec
-const _NestedInterface = t.type({
-  foo: t.string,
-  bar: t.type({
-    baz: t.string
-  })
-})
-
-// a type alias using interface
-export interface NestedInterface extends t.TypeOf<typeof _NestedInterface> {}
-
-//
-// Two possible options for the exported codec
-//
-
-// a clean NestedInterface which drops the kind...
-export const NestedInterface = t.clean<NestedInterface, NestedInterface>(_NestedInterface)
-/*
-NestedInterface: t.Type<NestedInterface, NestedInterface, t.mixed>
-*/
-
-// ... or an alias of _NestedInterface which keeps the kind
-export const NestedInterface = t.alias(_NestedInterface)<NestedInterface, NestedInterface>()
-/*
-t.InterfaceType<{
-    foo: t.StringType;
-    bar: t.InterfaceType<{
-        baz: t.StringType;
-    }, t.TypeOfProps<{
-        baz: t.StringType;
-    }>, t.OutputOfProps<{
-        baz: t.StringType;
-    }>, t.mixed>;
-}, NestedInterface, NestedInterface, t.mixed>
-*/
-
-// you can also alias the props
-interface NestedInterfaceProps extends t.PropsOf<typeof _NestedInterface> {}
-export const NestedInterface = t.alias(_NestedInterface)<NestedInterface, NestedInterface, NestedInterfaceProps>()
-/*
-const NestedInterface: t.InterfaceType<NestedInterfaceProps, NestedInterface, NestedInterface, t.mixed>
-*/
-```
