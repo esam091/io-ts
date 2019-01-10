@@ -65,8 +65,6 @@ high state of flux, you're at risk of it changing without notice.
   - deprecate `Array` in favour of `UnknownArray` (@gcanti)
   - deprecate `Dictionary` in favour of `UnknownRecord` (@gcanti)
   - deprecate `dictionary` in favour of `record` (@gcanti)
-  - deprecate `readonly` and `ReadonlyType` (@gcanti)
-  - deprecate `readonlyArray` and `ReadonlyArrayType` (@gcanti)
   - deprecate `PropsOf` type (@gcanti)
   - deprecate `Exact` type (@gcanti)
   - deprecate `Type` in favour of `Codec` (@gcanti)

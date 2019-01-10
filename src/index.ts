@@ -1429,7 +1429,6 @@ export function tuple<CS extends [Mixed, Mixed, ...Array<Mixed>]>(
 
 /**
  * @since 1.0.0
- * @deprecated
  */
 export class ReadonlyType<C extends Any, A = any, O = A, I = unknown> extends Codec<A, O, I> {
   readonly _tag: 'ReadonlyType' = 'ReadonlyType'
@@ -1457,7 +1456,6 @@ export interface ReadonlyC<C extends Mixed>
 
 /**
  * @since 1.0.0
- * @deprecated
  */
 export const readonly = <C extends Mixed>(codec: C, name: string = `Readonly<${codec.name}>`): ReadonlyC<C> =>
   new ReadonlyType(
@@ -1476,7 +1474,6 @@ export const readonly = <C extends Mixed>(codec: C, name: string = `Readonly<${c
 
 /**
  * @since 1.0.0
- * @deprecated
  */
 export class ReadonlyArrayType<C extends Any, A = any, O = A, I = unknown> extends Codec<A, O, I> {
   readonly _tag: 'ReadonlyArrayType' = 'ReadonlyArrayType'
@@ -1499,7 +1496,6 @@ export interface ReadonlyArrayC<C extends Mixed>
 
 /**
  * @since 1.0.0
- * @deprecated
  */
 export const readonlyArray = <C extends Mixed>(
   codec: C,

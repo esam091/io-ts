@@ -657,7 +657,6 @@ export interface TupleC<CS extends [Mixed, Mixed, ...Array<Mixed>]> extends Tupl
 export declare function tuple<CS extends [Mixed, Mixed, ...Array<Mixed>]>(types: CS, name?: string): TupleC<CS>;
 /**
  * @since 1.0.0
- * @deprecated
  */
 export declare class ReadonlyType<C extends Any, A = any, O = A, I = unknown> extends Codec<A, O, I> {
     readonly type: C;
@@ -675,12 +674,10 @@ export interface ReadonlyC<C extends Mixed> extends ReadonlyType<C, {
 }
 /**
  * @since 1.0.0
- * @deprecated
  */
 export declare const readonly: <C extends Mixed>(codec: C, name?: string) => ReadonlyC<C>;
 /**
  * @since 1.0.0
- * @deprecated
  */
 export declare class ReadonlyArrayType<C extends Any, A = any, O = A, I = unknown> extends Codec<A, O, I> {
     readonly type: C;
@@ -694,7 +691,6 @@ export interface ReadonlyArrayC<C extends Mixed> extends ReadonlyArrayType<C, Re
 }
 /**
  * @since 1.0.0
- * @deprecated
  */
 export declare const readonlyArray: <C extends Mixed>(codec: C, name?: string) => ReadonlyArrayC<C>;
 /**
