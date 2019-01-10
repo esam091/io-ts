@@ -424,7 +424,7 @@ export const boolean: BooleanC = new BooleanType()
 export class AnyArrayType extends Codec<Array<unknown>, Array<unknown>, unknown> {
   readonly _tag: 'AnyArrayType' = 'AnyArrayType'
   constructor() {
-    super('Array', Array.isArray, (u, c) => (Array.isArray(u) ? success(u) : failure(u, c)), identity)
+    super('UnknownArray', Array.isArray, (u, c) => (Array.isArray(u) ? success(u) : failure(u, c)), identity)
   }
 }
 
@@ -446,7 +446,7 @@ const isDictionary = (u: unknown): u is Record<string, unknown> => u !== null &&
 export class AnyDictionaryType extends Codec<Record<string, unknown>, Record<string, unknown>, unknown> {
   readonly _tag: 'AnyDictionaryType' = 'AnyDictionaryType'
   constructor() {
-    super('Dictionary', isDictionary, (u, c) => (isDictionary(u) ? success(u) : failure(u, c)), identity)
+    super('UnknownRecord', isDictionary, (u, c) => (isDictionary(u) ? success(u) : failure(u, c)), identity)
   }
 }
 

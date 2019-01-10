@@ -2,10 +2,10 @@ import * as assert from 'assert'
 import * as t from '../src/index'
 import { assertSuccess, assertFailure } from './helpers'
 
-describe('Dictionary', () => {
+describe('UnknownRecord', () => {
   it('should succeed validating a valid value', () => {
-    const T1 = t.Dictionary
-    assertSuccess(t.Dictionary.decode({}))
+    const T1 = t.UnknownRecord
+    assertSuccess(T1.decode({}))
     assertSuccess(T1.decode([]))
     assertSuccess(T1.decode([1]))
     assertSuccess(T1.decode(new Number()))
@@ -13,12 +13,29 @@ describe('Dictionary', () => {
   })
 
   it('should fail validating an invalid value', () => {
-    const T = t.Dictionary
-    assertFailure(T.decode('s'), ['Invalid value "s" supplied to : Dictionary'])
-    assertFailure(T.decode(1), ['Invalid value 1 supplied to : Dictionary'])
-    assertFailure(T.decode(true), ['Invalid value true supplied to : Dictionary'])
-    assertFailure(T.decode(null), ['Invalid value null supplied to : Dictionary'])
-    assertFailure(T.decode(undefined), ['Invalid value undefined supplied to : Dictionary'])
+    const T = t.UnknownRecord
+    assertFailure(T.decode('s'), ['Invalid value "s" supplied to : UnknownRecord'])
+    assertFailure(T.decode(1), ['Invalid value 1 supplied to : UnknownRecord'])
+    assertFailure(T.decode(true), ['Invalid value true supplied to : UnknownRecord'])
+    assertFailure(T.decode(null), ['Invalid value null supplied to : UnknownRecord'])
+    assertFailure(T.decode(undefined), ['Invalid value undefined supplied to : UnknownRecord'])
+  })
+})
+
+describe('UnknownArray', () => {
+  it('should succeed validating a valid value', () => {
+    const T1 = t.UnknownArray
+    assertSuccess(T1.decode([]))
+    assertSuccess(T1.decode([1]))
+  })
+
+  it('should fail validating an invalid value', () => {
+    const T = t.UnknownArray
+    assertFailure(T.decode('s'), ['Invalid value "s" supplied to : UnknownArray'])
+    assertFailure(T.decode(1), ['Invalid value 1 supplied to : UnknownArray'])
+    assertFailure(T.decode(true), ['Invalid value true supplied to : UnknownArray'])
+    assertFailure(T.decode(null), ['Invalid value null supplied to : UnknownArray'])
+    assertFailure(T.decode(undefined), ['Invalid value undefined supplied to : UnknownArray'])
   })
 })
 
