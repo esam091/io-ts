@@ -230,8 +230,10 @@ export class NullType extends Codec<null, null, unknown> {
 export interface NullC extends NullType {}
 
 /**
+ * Use `null` instead
  * @alias `null`
  * @since 1.0.0
+ * @deprecated
  */
 export const nullType: NullC = new NullType()
 
@@ -252,7 +254,7 @@ export class UndefinedType extends Codec<undefined, undefined, unknown> {
  */
 export interface UndefinedC extends UndefinedType {}
 
-const undefinedType: UndefinedC = new UndefinedType()
+const undefinedCodec: UndefinedC = new UndefinedType()
 
 /**
  * @since 1.2.0
@@ -261,7 +263,7 @@ const undefinedType: UndefinedC = new UndefinedType()
 export class VoidType extends Codec<void, void, unknown> {
   readonly _tag: 'VoidType' = 'VoidType'
   constructor() {
-    super('void', undefinedType.is, undefinedType.validate, identity)
+    super('void', undefinedCodec.is, undefinedCodec.validate, identity)
   }
 }
 
@@ -904,7 +906,7 @@ export const partial = <P extends Props>(
   const len = keys.length
   const partials: Props = {}
   for (let i = 0; i < len; i++) {
-    partials[keys[i]] = union([types[i], undefinedType])
+    partials[keys[i]] = union([types[i], undefinedCodec])
   }
   return new PartialType(
     name,
@@ -1881,7 +1883,7 @@ export function alias<A, O, I>(
 
 export {
   nullType as null,
-  undefinedType as undefined,
+  undefinedCodec as undefined,
   UnknownArray as Array,
   type as interface,
   voidType as void,

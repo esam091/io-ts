@@ -163,8 +163,10 @@ export declare class NullType extends Codec<null, null, unknown> {
 export interface NullC extends NullType {
 }
 /**
+ * Use `null` instead
  * @alias `null`
  * @since 1.0.0
+ * @deprecated
  */
 export declare const nullType: NullC;
 /**
@@ -179,7 +181,7 @@ export declare class UndefinedType extends Codec<undefined, undefined, unknown> 
  */
 export interface UndefinedC extends UndefinedType {
 }
-declare const undefinedType: UndefinedC;
+declare const undefinedCodec: UndefinedC;
 /**
  * @since 1.2.0
  * @deprecated
@@ -846,4 +848,4 @@ export declare type Exact<T, X extends T> = T & {
 export declare function alias<A, O, P, I>(type: PartialType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => PartialType<PP, AA, OO, II>;
 export declare function alias<A, O, P, I>(type: StrictType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => StrictType<PP, AA, OO, II>;
 export declare function alias<A, O, P, I>(type: InterfaceType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => InterfaceType<PP, AA, OO, II>;
-export { nullType as null, undefinedType as undefined, UnknownArray as Array, type as interface, voidType as void, Codec as Type, UnknownRecord as Dictionary, record as dictionary };
+export { nullType as null, undefinedCodec as undefined, UnknownArray as Array, type as interface, voidType as void, Codec as Type, UnknownRecord as Dictionary, record as dictionary };

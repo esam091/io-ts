@@ -70,6 +70,7 @@ high state of flux, you're at risk of it changing without notice.
   - deprecate `PropsOf` type (@gcanti)
   - deprecate `Exact` type (@gcanti)
   - deprecate `Type` in favour of `Codec` (@gcanti)
+  - deprecate `nullType` in favour of `null` (@gcanti)
 
 # 1.5.2
 
