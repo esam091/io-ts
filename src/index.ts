@@ -1610,19 +1610,21 @@ export type Tagged<Tag extends string, A = any, O = A> =
   | TaggedExact<Tag, A, O>
   | RecursiveType<any, A, O>
 
+const isRefinementCodec = (codec: Mixed): codec is RefinementType<Any> => (codec as any)._tag === 'RefinementType'
+
 /**
  * @since 1.3.0
  */
-export const isTagged = <Tag extends string>(tag: Tag): ((type: Mixed) => type is Tagged<Tag>) => {
-  const f = (type: Mixed): type is Tagged<Tag> => {
-    if (type instanceof InterfaceType || type instanceof StrictType) {
-      return hasOwnProperty.call(type.props, tag)
-    } else if (type instanceof IntersectionType) {
-      return type.types.some(f)
-    } else if (type instanceof UnionType) {
-      return type.types.every(f)
-    } else if (type instanceof RefinementType || type instanceof ExactType) {
-      return f(type.type)
+export const isTagged = <Tag extends string>(tag: Tag): ((codec: Mixed) => codec is Tagged<Tag>) => {
+  const f = (codec: Mixed): codec is Tagged<Tag> => {
+    if (isInterfaceCodec(codec) || isStrictCodec(codec)) {
+      return hasOwnProperty.call(codec.props, tag)
+    } else if (isIntersectionCodec(codec)) {
+      return codec.types.some(f)
+    } else if (isUnionCodec(codec)) {
+      return codec.types.every(f)
+    } else if (isRefinementCodec(codec) || isExactCodec(codec)) {
+      return f(codec.type)
     } else {
       return false
     }

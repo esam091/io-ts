@@ -759,7 +759,7 @@ export declare type Tagged<Tag extends string, A = any, O = A> = InterfaceType<T
 /**
  * @since 1.3.0
  */
-export declare const isTagged: <Tag extends string>(tag: Tag) => (type: Mixed) => type is Tagged<Tag, any, any>;
+export declare const isTagged: <Tag extends string>(tag: Tag) => (codec: Mixed) => codec is Tagged<Tag, any, any>;
 /**
  * @since 1.3.0
  */
