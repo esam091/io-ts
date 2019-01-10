@@ -260,5 +260,7 @@ describe('getIndex', () => {
     assert.deepEqual(t.getIndex(T.types), { type: [['a', TUA], ['b', TUB], ['c', TUC], ['d', TUD]] })
     const StrictA = t.strict({ type: t.literal('A') })
     assert.deepEqual(t.getIndex([StrictA, StrictA]), { type: [['A', StrictA]] })
+    const B2 = t.type({ type2: t.literal('B') })
+    assert.deepEqual(t.getIndex([A, B2]), {})
   })
 })
