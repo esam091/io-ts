@@ -386,7 +386,7 @@ export interface RefinementC<C extends Any> extends RefinementType<C, TypeOf<C>,
 /**
  * @since 1.0.0
  */
-export declare const refinement: <C extends Any>(type: C, predicate: Predicate<C["_A"]>, name?: string) => RefinementC<C>;
+export declare const refinement: <C extends Any>(codec: C, predicate: Predicate<C["_A"]>, name?: string) => RefinementC<C>;
 /**
  * @since 1.0.0
  */
@@ -455,7 +455,7 @@ export interface ArrayC<C extends Mixed> extends ArrayType<C, Array<TypeOf<C>>, 
 /**
  * @since 1.0.0
  */
-export declare const array: <C extends Mixed>(type: C, name?: string) => ArrayC<C>;
+export declare const array: <C extends Mixed>(codec: C, name?: string) => ArrayC<C>;
 /**
  * @since 1.0.0
  */
@@ -591,7 +591,7 @@ export declare const isExactCodec: (codec: Mixed) => codec is ExactType<Mixed, a
 /**
  * @internal
  */
-export declare const getTypeIndex: (type: Mixed, override?: Mixed) => Index;
+export declare const getTypeIndex: (codec: Mixed, override?: Mixed) => Index;
 /**
  * @internal
  */
@@ -677,7 +677,7 @@ export interface ReadonlyC<C extends Mixed> extends ReadonlyType<C, {
  * @since 1.0.0
  * @deprecated
  */
-export declare const readonly: <C extends Mixed>(type: C, name?: string) => ReadonlyC<C>;
+export declare const readonly: <C extends Mixed>(codec: C, name?: string) => ReadonlyC<C>;
 /**
  * @since 1.0.0
  * @deprecated
@@ -696,7 +696,7 @@ export interface ReadonlyArrayC<C extends Mixed> extends ReadonlyArrayType<C, Re
  * @since 1.0.0
  * @deprecated
  */
-export declare const readonlyArray: <C extends Mixed>(type: C, name?: string) => ReadonlyArrayC<C>;
+export declare const readonlyArray: <C extends Mixed>(codec: C, name?: string) => ReadonlyArrayC<C>;
 /**
  * @since 1.0.0
  * @deprecated
@@ -763,7 +763,7 @@ export declare const isTagged: <Tag extends string>(tag: Tag) => (codec: Mixed) 
 /**
  * @since 1.3.0
  */
-export declare const getTagValue: <Tag extends string>(tag: Tag) => (type: Tagged<Tag, any, any>) => LiteralValue;
+export declare const getTagValue: <Tag extends string>(tag: Tag) => (codec: Tagged<Tag, any, any>) => LiteralValue;
 /**
  * @since 1.3.0
  * @deprecated
@@ -819,13 +819,13 @@ export interface ExactC<C extends HasProps> extends ExactType<C, TypeOf<C>, Outp
 /**
  * @since 1.1.0
  */
-export declare function exact<C extends HasProps>(type: C, name?: string): ExactC<C>;
+export declare function exact<C extends HasProps>(codec: C, name?: string): ExactC<C>;
 /**
  * Drops the codec "kind"
  * @since 1.1.0
  * @deprecated
  */
-export declare function clean<A, O = A, I = unknown>(type: Codec<A, O, I>): Codec<A, O, I>;
+export declare function clean<A, O = A, I = unknown>(codec: Codec<A, O, I>): Codec<A, O, I>;
 /**
  * @since 1.0.0
  * @deprecated
@@ -851,7 +851,7 @@ export declare type Exact<T, X extends T> = T & {
  * @since 1.1.0
  * @deprecated
  */
-export declare function alias<A, O, P, I>(type: PartialType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => PartialType<PP, AA, OO, II>;
-export declare function alias<A, O, P, I>(type: StrictType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => StrictType<PP, AA, OO, II>;
-export declare function alias<A, O, P, I>(type: InterfaceType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => InterfaceType<PP, AA, OO, II>;
+export declare function alias<A, O, P, I>(codec: PartialType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => PartialType<PP, AA, OO, II>;
+export declare function alias<A, O, P, I>(codec: StrictType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => StrictType<PP, AA, OO, II>;
+export declare function alias<A, O, P, I>(codec: InterfaceType<P, A, O, I>): <AA extends Exact<A, AA>, OO extends Exact<O, OO> = O, PP extends Exact<P, PP> = P, II extends I = I>() => InterfaceType<PP, AA, OO, II>;
 export { nullType as null, undefinedCodec as undefined, UnknownArray as Array, type as interface, voidType as void, Codec as Type, UnknownRecord as Dictionary, record as dictionary };
