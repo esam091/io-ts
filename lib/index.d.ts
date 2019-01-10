@@ -87,7 +87,7 @@ export interface Encoder<A, O> {
 /**
  * @since 1.0.0
  */
-export declare class Codec<A, O = A, I = unknown> implements Decoder<I, A>, Encoder<A, O> {
+export declare class Codec<A, O, I> implements Decoder<I, A>, Encoder<A, O> {
     /** a unique name for this codec */
     readonly name: string;
     /** a custom type guard */

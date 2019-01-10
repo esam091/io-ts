@@ -101,7 +101,7 @@ export interface Encoder<A, O> {
 /**
  * @since 1.0.0
  */
-export class Codec<A, O = A, I = unknown> implements Decoder<I, A>, Encoder<A, O> {
+export class Codec<A, O, I> implements Decoder<I, A>, Encoder<A, O> {
   readonly _A!: A
   readonly _O!: O
   readonly _I!: I

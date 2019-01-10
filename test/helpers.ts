@@ -19,7 +19,7 @@ export function assertDeepEqual<T>(validation: t.Validation<T>, value: any): voi
   assert.deepEqual(validation.fold<any>(t.identity, t.identity), value)
 }
 
-export const string2 = new t.Codec<string, string>(
+export const string2 = new t.Codec<string, string, unknown>(
   'string2',
   (v): v is string => t.string.is(v) && v[1] === '-',
   (s, c) =>
@@ -33,7 +33,7 @@ export const string2 = new t.Codec<string, string>(
   a => a[0] + a[2]
 )
 
-export const DateFromNumber = new t.Codec<Date, number>(
+export const DateFromNumber = new t.Codec<Date, number, unknown>(
   'DateFromNumber',
   (v): v is Date => v instanceof Date,
   (s, c) =>
@@ -56,7 +56,10 @@ export const NumberFromString = new t.Codec<number, string, string>(
 
 export const IntegerFromString = t.refinement(NumberFromString, t.Integer.is, 'IntegerFromString')
 
-export function withDefault<T extends t.Mixed>(type: T, defaultValue: t.TypeOf<T>): t.Codec<t.InputOf<T>, t.TypeOf<T>> {
+export function withDefault<C extends t.Mixed>(
+  type: C,
+  defaultValue: t.TypeOf<C>
+): t.Codec<t.InputOf<C>, t.TypeOf<C>, t.InputOf<C>> {
   return new t.Codec(
     `withDefault(${type.name}, ${JSON.stringify(defaultValue)})`,
     type.is,

@@ -437,7 +437,7 @@ import { TaskEither } from 'fp-ts/lib/TaskEither'
 
 // tslint:disable-next-line:strict-export-declare-modifiers
 declare function withValidation<L, A>(
-  type: t.Codec<A>,
+  type: t.Type<A>, // Type should accept only one type parameter
   f: (errors: t.Errors) => L,
   fa: TaskEither<L, A>
 ): TaskEither<L, A>

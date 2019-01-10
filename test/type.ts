@@ -18,7 +18,7 @@ describe('type', () => {
     assert.deepEqual(T2.decode(input).value, { a: undefined })
     assert.deepEqual(input, {})
 
-    const jsonTurnaround = <A>(type: t.Codec<A>, a: A): t.Validation<A> => {
+    const jsonTurnaround = <A, O, I>(type: t.Codec<A, O, I>, a: A): t.Validation<A> => {
       return type.decode(JSON.parse(JSON.stringify(type.encode(a))))
     }
     assert.deepEqual(jsonTurnaround(T2, { a: undefined }).value, { a: undefined })
