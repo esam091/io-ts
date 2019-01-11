@@ -317,8 +317,8 @@ interface GenerableReadonly extends t.ReadonlyType<Generable> {}
 interface GenerableReadonlyArray extends t.ReadonlyArrayType<Generable> {}
 interface GenerableRecursive extends t.RecursiveType<Generable> {}
 type Generable =
-  | t.StringType
-  | t.NumberType
+  | t.StringC
+  | t.NumberC
   | t.BooleanType
   | GenerableInterface
   | GenerableRefinement
@@ -345,7 +345,7 @@ function f(generable: Generable): string {
     case 'StringType':
       return 'StringType'
     case 'NumberType':
-      return 'StringType'
+      return 'NumberType'
     case 'BooleanType':
       return 'BooleanType'
     case 'RefinementType':
@@ -418,7 +418,13 @@ export function interfaceWithOptionals<RequiredProps extends t.Props, OptionalPr
   required: RequiredProps,
   optional: OptionalProps,
   name?: string
-): t.IntersectionC<[t.TypeC<RequiredProps>, t.PartialC<OptionalProps>]> {
+): t.IntersectionType<
+  [
+    t.InterfaceType<RequiredProps, t.TypeOfProps<RequiredProps>>,
+    t.PartialType<OptionalProps, t.TypeOfPartialProps<OptionalProps>>
+  ],
+  t.TypeOfProps<RequiredProps> & t.TypeOfPartialProps<OptionalProps>
+> {
   return t.intersection([t.interface(required), t.partial(optional)], name)
 }
 
@@ -428,6 +434,31 @@ export function maybe<RT extends t.Any>(
 ): t.UnionType<[RT, t.NullType], t.TypeOf<RT> | null, t.OutputOf<RT> | null, t.InputOf<RT> | null> {
   return t.union<[RT, t.NullType]>([type, t.null], name)
 }
+
+const pluck = <F extends string, U extends t.UnionType<Array<t.InterfaceType<{ [K in F]: t.Mixed }>>>>(
+  union: U,
+  field: F
+): t.Type<t.TypeOf<U>[F]> => {
+  return t.union(union.types.map(type => type.props[field]) as any)
+}
+
+export const Action = t.union([
+  t.type({
+    type: t.literal('Action1'),
+    payload: t.type({
+      foo: t.string
+    })
+  }),
+  t.type({
+    type: t.literal('Action2'),
+    payload: t.type({
+      bar: t.string
+    })
+  })
+])
+
+const ActionType = pluck(Action, 'type')
+type Assert20 = t.TypeOf<typeof ActionType> // $ExpectType "Action1" | "Action2"
 
 //
 // void

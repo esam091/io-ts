@@ -22,7 +22,7 @@ high state of flux, you're at risk of it changing without notice.
   - deprecate `taggedUnion` in favour of `union` (@gcanti)
     - tagged unions are now auto detected by `union`
 - **New Feature**
-  - remove overloadings from `tuple` and `intersection` (@gcanti)
+  - remove overloadings from `tuple` (@gcanti)
   - make `tuple`, `intersection`, `union` and `taggedUnion` safer (@gcanti)
     - the number of types passed in (at least two) are now statically enforced
   - add intermediary interfaces in order to avoid boilerplate / unreadable types (@gcanti)
@@ -66,7 +66,6 @@ high state of flux, you're at risk of it changing without notice.
   - deprecate `Dictionary` in favour of `UnknownRecord` (@gcanti)
   - deprecate `dictionary` in favour of `record` (@gcanti)
   - deprecate `PropsOf` type (@gcanti)
-  - deprecate `Exact` type (@gcanti)
   - deprecate `Type` in favour of `Codec` (@gcanti)
   - deprecate `nullType` in favour of `null` (@gcanti)
 

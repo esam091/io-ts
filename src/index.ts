@@ -1280,11 +1280,6 @@ export const union = <CS extends [Mixed, Mixed, ...Array<Mixed>]>(
 }
 
 /**
- * @see https://stackoverflow.com/a/50375286#50375286
- */
-type UnionToIntersection<U> = (U extends any ? (u: U) => void : never) extends ((u: infer I) => void) ? I : never
-
-/**
  * @since 1.0.0
  */
 export class IntersectionType<CS extends Array<Any>, A = any, O = A, I = unknown> extends Codec<A, O, I> {
@@ -1310,18 +1305,47 @@ export type Compact<A> = { [K in keyof A]: A[K] }
 /**
  * @since 1.6.0
  */
-export interface IntersectionC<CS extends [Mixed, Mixed, ...Array<Mixed>]>
+export interface IntersectionC<CS extends Array<Mixed>>
   extends IntersectionType<
     CS,
-    UnionToIntersection<TypeOf<CS[number]>>,
-    UnionToIntersection<OutputOf<CS[number]>>,
+    CS extends [Mixed, Mixed]
+      ? TypeOf<CS['0']> & TypeOf<CS['1']>
+      : CS extends [Mixed, Mixed, Mixed]
+      ? TypeOf<CS['0']> & TypeOf<CS['1']> & TypeOf<CS['2']>
+      : CS extends [Mixed, Mixed, Mixed, Mixed]
+      ? TypeOf<CS['0']> & TypeOf<CS['1']> & TypeOf<CS['2']> & TypeOf<CS['3']>
+      : CS extends [Mixed, Mixed, Mixed, Mixed, Mixed]
+      ? TypeOf<CS['0']> & TypeOf<CS['1']> & TypeOf<CS['2']> & TypeOf<CS['3']> & TypeOf<CS['3']>
+      : TypeOf<CS[number]>,
+    CS extends [Mixed, Mixed]
+      ? OutputOf<CS['0']> & OutputOf<CS['1']>
+      : CS extends [Mixed, Mixed, Mixed]
+      ? OutputOf<CS['0']> & OutputOf<CS['1']> & OutputOf<CS['2']>
+      : CS extends [Mixed, Mixed, Mixed, Mixed]
+      ? OutputOf<CS['0']> & OutputOf<CS['1']> & OutputOf<CS['2']> & OutputOf<CS['3']>
+      : CS extends [Mixed, Mixed, Mixed, Mixed, Mixed]
+      ? OutputOf<CS['0']> & OutputOf<CS['1']> & OutputOf<CS['2']> & OutputOf<CS['3']> & OutputOf<CS['3']>
+      : OutputOf<CS[number]>,
     unknown
   > {}
 
 /**
  * @since 1.0.0
  */
-export function intersection<CS extends [Mixed, Mixed, ...Array<Mixed>]>(
+export function intersection<A extends Mixed, B extends Mixed, C extends Mixed, D extends Mixed, E extends Mixed>(
+  types: [A, B, C, D, E],
+  name?: string
+): IntersectionC<[A, B, C, D, E]>
+export function intersection<A extends Mixed, B extends Mixed, C extends Mixed, D extends Mixed>(
+  types: [A, B, C, D],
+  name?: string
+): IntersectionC<[A, B, C, D]>
+export function intersection<A extends Mixed, B extends Mixed, C extends Mixed>(
+  types: [A, B, C],
+  name?: string
+): IntersectionC<[A, B, C]>
+export function intersection<A extends Mixed, B extends Mixed>(types: [A, B], name?: string): IntersectionC<[A, B]>
+export function intersection<CS extends Array<Mixed>>(
   types: CS,
   name: string = `(${types.map(type => type.name).join(' & ')})`
 ): IntersectionC<CS> {

@@ -606,10 +606,6 @@ export interface UnionC<CS extends [Mixed, Mixed, ...Array<Mixed>]> extends Unio
  */
 export declare const union: <CS extends [Mixed, Mixed, ...Mixed[]]>(types: CS, name?: string) => UnionC<CS>;
 /**
- * @see https://stackoverflow.com/a/50375286#50375286
- */
-declare type UnionToIntersection<U> = (U extends any ? (u: U) => void : never) extends ((u: infer I) => void) ? I : never;
-/**
  * @since 1.0.0
  */
 export declare class IntersectionType<CS extends Array<Any>, A = any, O = A, I = unknown> extends Codec<A, O, I> {
@@ -628,12 +624,15 @@ export declare type Compact<A> = {
 /**
  * @since 1.6.0
  */
-export interface IntersectionC<CS extends [Mixed, Mixed, ...Array<Mixed>]> extends IntersectionType<CS, UnionToIntersection<TypeOf<CS[number]>>, UnionToIntersection<OutputOf<CS[number]>>, unknown> {
+export interface IntersectionC<CS extends Array<Mixed>> extends IntersectionType<CS, CS extends [Mixed, Mixed] ? TypeOf<CS['0']> & TypeOf<CS['1']> : CS extends [Mixed, Mixed, Mixed] ? TypeOf<CS['0']> & TypeOf<CS['1']> & TypeOf<CS['2']> : CS extends [Mixed, Mixed, Mixed, Mixed] ? TypeOf<CS['0']> & TypeOf<CS['1']> & TypeOf<CS['2']> & TypeOf<CS['3']> : CS extends [Mixed, Mixed, Mixed, Mixed, Mixed] ? TypeOf<CS['0']> & TypeOf<CS['1']> & TypeOf<CS['2']> & TypeOf<CS['3']> & TypeOf<CS['3']> : TypeOf<CS[number]>, CS extends [Mixed, Mixed] ? OutputOf<CS['0']> & OutputOf<CS['1']> : CS extends [Mixed, Mixed, Mixed] ? OutputOf<CS['0']> & OutputOf<CS['1']> & OutputOf<CS['2']> : CS extends [Mixed, Mixed, Mixed, Mixed] ? OutputOf<CS['0']> & OutputOf<CS['1']> & OutputOf<CS['2']> & OutputOf<CS['3']> : CS extends [Mixed, Mixed, Mixed, Mixed, Mixed] ? OutputOf<CS['0']> & OutputOf<CS['1']> & OutputOf<CS['2']> & OutputOf<CS['3']> & OutputOf<CS['3']> : OutputOf<CS[number]>, unknown> {
 }
 /**
  * @since 1.0.0
  */
-export declare function intersection<CS extends [Mixed, Mixed, ...Array<Mixed>]>(types: CS, name?: string): IntersectionC<CS>;
+export declare function intersection<A extends Mixed, B extends Mixed, C extends Mixed, D extends Mixed, E extends Mixed>(types: [A, B, C, D, E], name?: string): IntersectionC<[A, B, C, D, E]>;
+export declare function intersection<A extends Mixed, B extends Mixed, C extends Mixed, D extends Mixed>(types: [A, B, C, D], name?: string): IntersectionC<[A, B, C, D]>;
+export declare function intersection<A extends Mixed, B extends Mixed, C extends Mixed>(types: [A, B, C], name?: string): IntersectionC<[A, B, C]>;
+export declare function intersection<A extends Mixed, B extends Mixed>(types: [A, B], name?: string): IntersectionC<[A, B]>;
 /**
  * @since 1.0.0
  */
